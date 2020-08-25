@@ -1,0 +1,47 @@
+{
+    "BROKER_URL": "wss://test.mosquitto.org:8081",
+    "TOPICS": [
+        {
+            "AUTO": true,
+            "TYPE": "multiple",
+            "PREFIX": "oximeters",
+            "RANGE_START": 2,
+            "RANGE_END": 10,
+            "TIME_INTERVAL": 5,
+            "DATA": [
+                {
+                    "NAME": "beat",
+                    "TYPE": "int",
+                    "RANGE_START": 50,
+                    "RANGE_END": 190,
+                    "MAX_STEP": 5
+                },
+                {
+                    "NAME": "spo2",
+                    "TYPE": "int",
+                    "RANGE_START": 50,
+                    "RANGE_END": 100,
+                    "MAX_STEP": 2
+                },
+                {
+                    "NAME": "temp",
+                    "TYPE": "float",
+                    "RANGE_START": 34,
+                    "RANGE_END": 40,
+                    "MAX_STEP": 0.2
+                }
+            ]
+        },
+        {
+            "AUTO": false,
+            "TYPE": "multiple",
+            "PREFIX": "alerts",
+            "DATA": [
+                {
+                    "NAME": "alertType",
+                    "TYPE": "input"
+                }
+            ]
+        }
+    ]
+}
