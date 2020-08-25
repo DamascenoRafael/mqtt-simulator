@@ -1,5 +1,6 @@
 {
-    "BROKER_URL": "wss://test.mosquitto.org:8081",
+    "BROKER_URL": "test.mosquitto.org",
+    "BROKER_PORT": 1883,
     "TOPICS": [
         {
             "AUTO": true,
