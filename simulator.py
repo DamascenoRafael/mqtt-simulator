@@ -1,5 +1,5 @@
 import json
-from topic import TopicAuto, TopicManual
+from topic import TopicAuto
 
 class Simulator:
     
@@ -11,12 +11,16 @@ class Simulator:
             self.broker_url = config["BROKER_URL"]
             self.broker_port = config["BROKER_PORT"]
             for topic in config["TOPICS"]:
-                self.topics.append(Topic(topic))
-
+                for id in range(topic["RANGE_START"], topic["RANGE_END"]+1):
+                    topic_url = topic["PREFIX"]+'/'+str(id)
+                    self.topics.append(TopicAuto(topic_url,  topic["DATA"], self.broker_url, self.broker_port, topic["TIME_INTERVAL"]))
 
     def run(self):
         for topic in self.topics:
-            topic.run(self.broker_url) 
+            print(topic.topic_url)
+            topic.start() 
 
     def stop(self):
-        pass    
+        for topic in self.topics:
+            topic.stop() 
+
