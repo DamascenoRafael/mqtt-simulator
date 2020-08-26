@@ -1,5 +1,5 @@
 {
-    "BROKER_URL": "test.mosquitto.org",
+    "BROKER_URL": "mqtt.eclipse.org",
     "BROKER_PORT": 1883,
     "TOPICS": [
         {
@@ -18,7 +18,7 @@
                     "MAX_STEP": 5
                 },
                 {
-                    "NAME": "spo2",
+                    "NAME": "sop2",
                     "TYPE": "int",
                     "RANGE_START": 50,
                     "RANGE_END": 100,
@@ -34,13 +34,19 @@
             ]
         },
         {
-            "AUTO": false,
+            "AUTO": true,
             "TYPE": "multiple",
             "PREFIX": "alerts",
+            "RANGE_START": 2,
+            "RANGE_END": 2,
+            "TIME_INTERVAL": 60,
             "DATA": [
                 {
                     "NAME": "alertType",
-                    "TYPE": "input"
+                    "TYPE": "int",
+                    "RANGE_START": 1,
+                    "RANGE_END": 4,
+                    "MAX_STEP": 4
                 }
             ]
         }
