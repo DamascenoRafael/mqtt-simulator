@@ -7,11 +7,12 @@ import json
 import random
 
 class Topic(ABC):
-    def __init__(self, broker_url, broker_port, topic_url, topic_data):
+    def __init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability):
         self.broker_url = broker_url
         self.broker_port = broker_port
         self.topic_url = topic_url
         self.topic_data = topic_data
+        self.retain_probability = retain_probability
         self.client = None
 
     def connect(self):
@@ -34,8 +35,8 @@ class Topic(ABC):
 
 
 class TopicAuto(Topic, threading.Thread):
-    def __init__(self, broker_url, broker_port, topic_url, topic_data, time_interval):
-        Topic.__init__(self, broker_url, broker_port, topic_url, topic_data)
+    def __init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability, time_interval):
+        Topic.__init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability)
         threading.Thread.__init__(self, args = (), kwargs = None)
         self.time_interval = time_interval
         self.old_payload = None
@@ -60,7 +61,7 @@ class TopicAuto(Topic, threading.Thread):
         else:
             payload = self.old_payload
             for data in self.topic_data:
-                if random.random() > .75:
+                if random.random() > (1 - self.retain_probability):
                     continue
                 if data["TYPE"] == "int":
                     step = random.randint(data["MAX_STEP"]*-1, data["MAX_STEP"])

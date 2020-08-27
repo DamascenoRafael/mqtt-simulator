@@ -8,6 +8,7 @@
             "RANGE_START": 2,
             "RANGE_END": 10,
             "TIME_INTERVAL": 5,
+            "RETAIN_PROBABILITY": 0.25,
             "DATA": [
                 {
                     "NAME": "beat",
@@ -38,6 +39,7 @@
             "RANGE_START": 2,
             "RANGE_END": 2,
             "TIME_INTERVAL": 60,
+            "RETAIN_PROBABILITY": 0,
             "DATA": [
                 {
                     "NAME": "alertType",
