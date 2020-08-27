@@ -2,25 +2,37 @@ import json
 from topic import TopicAuto
 
 class Simulator:
-    
     def __init__(self, settings_file):
-        
+        self.broker_url = None
+        self.broker_port = None
         self.topics = []
-        with open(settings_file,'r') as json_file:
+        self.load_settings(settings_file)
+
+    def load_settings(self, settings_file):
+        with open(settings_file) as json_file:
             config = json.load(json_file)
-            self.broker_url = config["BROKER_URL"]
-            self.broker_port = config["BROKER_PORT"]
-            for topic in config["TOPICS"]:
-                for id in range(topic["RANGE_START"], topic["RANGE_END"]+1):
-                    topic_url = topic["PREFIX"]+'/'+str(id)
-                    self.topics.append(TopicAuto(topic_url,  topic["DATA"], self.broker_url, self.broker_port, topic["TIME_INTERVAL"]))
+            self.broker_url = config['BROKER_URL']
+            self.broker_port = config['BROKER_PORT']
+            # read each configured topic
+            for topic in config['TOPICS']:
+                topic_data = topic['DATA']
+                topic_time_interval = topic['TIME_INTERVAL']
+                if topic['TYPE'] == 'single':
+                    # create single topic with format: /{PREFIX}
+                    topic_url = topic['PREFIX']
+                    self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_time_interval))
+                elif topic['TYPE'] == 'multiple':
+                    # create multiple topics with format: /{PREFIX}/{id}
+                    for id in range(topic['RANGE_START'], topic['RANGE_END']+1):
+                        topic_url = topic['PREFIX'] + '/' + str(id)
+                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_time_interval))
 
     def run(self):
         for topic in self.topics:
-            print(topic.topic_url)
+            print('Starting: ' + topic.topic_url + '...')
             topic.start() 
 
     def stop(self):
         for topic in self.topics:
+            print('Stopping: ' + topic.topic_url + '...')
             topic.stop() 
-

@@ -7,17 +7,17 @@ import json
 import random
 
 class Topic(ABC):
-    
-    def __init__(self, topic_url, topic_data):
+    def __init__(self, broker_url, broker_port, topic_url, topic_data):
+        self.broker_url = broker_url
+        self.broker_port = broker_port
         self.topic_url = topic_url
         self.topic_data = topic_data
         self.client = None
 
-
-    def connect(self, broker_url, broker_port):
-        self.client = paho.Client(self.topic_url, clean_session=True, transport="tcp")
+    def connect(self):
+        self.client = paho.Client(self.topic_url, clean_session=True, transport='tcp')
         self.client.on_publish = self.on_publish
-        self.client.connect(broker_url, broker_port) 
+        self.client.connect(self.broker_url, self.broker_port) 
         self.client.loop_start()
 
     @abstractmethod
@@ -34,17 +34,14 @@ class Topic(ABC):
 
 
 class TopicAuto(Topic, threading.Thread):
-
-    def __init__(self, topic_url, topic_data, broker_url, broker_port, time_interval):
-        Topic.__init__(self, topic_url, topic_data)
+    def __init__(self, broker_url, broker_port, topic_url, topic_data, time_interval):
+        Topic.__init__(self, broker_url, broker_port, topic_url, topic_data)
         threading.Thread.__init__(self, args = (), kwargs = None)
         self.time_interval = time_interval
-        self.broker_url = broker_url
-        self.broker_port = broker_port
         self.old_payload = None
 
     def run(self):
-        self.connect(self.broker_url, self.broker_port)
+        self.connect()
         while True:
             payload = self.generateData()
             self.old_payload = payload
