@@ -3,7 +3,6 @@
     "BROKER_PORT": 1883,
     "TOPICS": [
         {
-            "AUTO": true,
             "TYPE": "multiple",
             "PREFIX": "oximeters",
             "RANGE_START": 2,
@@ -34,7 +33,6 @@
             ]
         },
         {
-            "AUTO": true,
             "TYPE": "multiple",
             "PREFIX": "alerts",
             "RANGE_START": 2,
