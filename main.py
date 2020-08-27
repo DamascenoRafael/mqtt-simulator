@@ -1,8 +1,8 @@
+from pathlib import Path
 from simulator import Simulator
 
-config_file = "settings.json"
+settings_file = Path('./settings.json')
 
-simulator = Simulator(config_file)
+simulator = Simulator(settings_file)
 
 simulator.run()
-
