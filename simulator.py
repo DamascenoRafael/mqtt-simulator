@@ -30,10 +30,10 @@ class Simulator:
 
     def run(self):
         for topic in self.topics:
-            print('Starting: ' + topic.topic_url + '...')
+            print(f'Starting: {topic.topic_url} ...')
             topic.start() 
 
     def stop(self):
         for topic in self.topics:
-            print('Stopping: ' + topic.topic_url + '...')
+            print(f'Stopping: {topic.topic_url} ...')
             topic.stop() 

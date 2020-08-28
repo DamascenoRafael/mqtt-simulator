@@ -29,7 +29,7 @@ class Topic(ABC):
         self.client.disconnect()
 
     def on_publish(self, client, userdata, result):
-        print('[' + time.strftime('%H:%M:%S') + '] Data published on: ' + self.topic_url)
+        print(f'[{time.strftime("%H:%M:%S")}] Data published on: {self.topic_url}')
 
 
 class TopicAuto(Topic, threading.Thread):
