@@ -3,7 +3,7 @@ import json
 import random
 import threading
 from abc import ABC, abstractmethod
-import paho.mqtt.client as paho
+import paho.mqtt.client as mqtt
 
 class Topic(ABC):
     def __init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability):
@@ -15,7 +15,7 @@ class Topic(ABC):
         self.client = None
 
     def connect(self):
-        self.client = paho.Client(self.topic_url, clean_session=True, transport='tcp')
+        self.client = mqtt.Client(self.topic_url, clean_session=True, transport='tcp')
         self.client.on_publish = self.on_publish
         self.client.connect(self.broker_url, self.broker_port) 
         self.client.loop_start()
