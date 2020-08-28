@@ -7,6 +7,8 @@ Easy-to-configure MQTT simulator written in [Python 3](https://www.python.org/) 
 [Configuration](#configuration) •
 [Authors](#authors)
 
+![Simulator Running](images/simulator-running.gif)
+
 ## Features
 
 * Small and easy-to-configure simulator for publishing data to a broker  
