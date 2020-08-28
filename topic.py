@@ -1,10 +1,9 @@
-from abc import ABC, abstractmethod
-import threading
-from queue import Queue
-import paho.mqtt.client as paho
 import time
 import json
 import random
+import threading
+from abc import ABC, abstractmethod
+import paho.mqtt.client as paho
 
 class Topic(ABC):
     def __init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability):
@@ -43,34 +42,32 @@ class TopicAuto(Topic, threading.Thread):
     def run(self):
         self.connect()
         while True:
-            payload = self.generateData()
+            payload = self.generate_data()
             self.old_payload = payload
             self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=2, retain= False) 
             time.sleep(self.time_interval)
 
-    def generateData(self):
+    def generate_data(self):
         payload = {}
         
         if self.old_payload == None:
+            # generate initial data
             for data in self.topic_data:
-                if data["TYPE"] == "int":
-                    payload[data["NAME"]] = random.randint(data["RANGE_START"], data["RANGE_END"])
+                if data['TYPE'] == 'int':
+                    payload[data['NAME']] = random.randint(data['RANGE_START'], data['RANGE_END'])
                 else:
-                    payload[data["NAME"]] = random.uniform(data["RANGE_START"], data["RANGE_END"])
+                    payload[data['NAME']] = random.uniform(data['RANGE_START'], data['RANGE_END'])
         else:
+            # generate next data
             payload = self.old_payload
             for data in self.topic_data:
                 if random.random() > (1 - self.retain_probability):
                     continue
-                if data["TYPE"] == "int":
-                    step = random.randint(data["MAX_STEP"]*-1, data["MAX_STEP"])
+                if data['TYPE'] == 'int':
+                    step = random.randint(-data['MAX_STEP'], data['MAX_STEP'])
                 else:
-                    step = random.uniform(data["MAX_STEP"]*-1, data["MAX_STEP"])
-
-                payload[data["NAME"]] =  max(payload[data["NAME"]]+step, data["RANGE_START"]) if step < 0 else min(payload[data["NAME"]]+step, data["RANGE_END"])
+                    step = random.uniform(-data['MAX_STEP'], data['MAX_STEP'])
+                
+                payload[data['NAME']] = max(payload[data['NAME']]+step, data['RANGE_START']) if step < 0 else min(payload[data['NAME']]+step, data['RANGE_END'])
 
         return payload
-
-    
-
-
