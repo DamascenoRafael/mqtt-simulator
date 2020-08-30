@@ -35,10 +35,10 @@ pip3 install -r requirements.txt
 
 #### Running
 
-The simulator settings can be changed in the `./settings.json` file.
+The simulator settings can be changed in the `config/settings.json` file.
 
 ```shell
-python3 main.py
+python3 mqtt-simulator/main.py
 ```
 
 Runs the simulator according to the settings file.  
@@ -46,7 +46,7 @@ The terminal will show the simulator event log.
 
 ## Configuration
 
-* The `./settings.json` file has three main configuration parameters:
+* The `config/settings.json` file has three main configuration parameters:
 
     ```json
     {
