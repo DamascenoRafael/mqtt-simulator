@@ -34,10 +34,8 @@
             ]
         },
         {
-            "TYPE": "multiple",
-            "PREFIX": "alerts",
-            "RANGE_START": 2,
-            "RANGE_END": 2,
+            "TYPE": "single",
+            "PREFIX": "alerts/2",
             "TIME_INTERVAL": 60,
             "RETAIN_PROBABILITY": 0,
             "DATA": [
@@ -46,7 +44,7 @@
                     "TYPE": "int",
                     "RANGE_START": 1,
                     "RANGE_END": 4,
-                    "MAX_STEP": 4
+                    "MAX_STEP": 3
                 }
             ]
         }
