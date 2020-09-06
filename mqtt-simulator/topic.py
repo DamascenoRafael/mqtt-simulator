@@ -55,19 +55,21 @@ class TopicAuto(Topic, threading.Thread):
             for data in self.topic_data:
                 if data['TYPE'] == 'int':
                     payload[data['NAME']] = random.randint(data['RANGE_START'], data['RANGE_END'])
-                else:
+                elif data['TYPE'] == 'float':
                     payload[data['NAME']] = random.uniform(data['RANGE_START'], data['RANGE_END'])
+                elif data['TYPE'] == 'bool':
+                    payload[data['NAME']] = random.choice([True, False])
         else:
             # generate next data
             payload = self.old_payload
             for data in self.topic_data:
                 if random.random() > (1 - self.retain_probability):
                     continue
-                if data['TYPE'] == 'int':
-                    step = random.randint(-data['MAX_STEP'], data['MAX_STEP'])
+                if data['TYPE'] == 'bool':
+                    payload[data['NAME']] = not payload[data['NAME']]
                 else:
-                    step = random.uniform(-data['MAX_STEP'], data['MAX_STEP'])
-                
-                payload[data['NAME']] = max(payload[data['NAME']]+step, data['RANGE_START']) if step < 0 else min(payload[data['NAME']]+step, data['RANGE_END'])
+                    step = random.uniform(-data['MAX_STEP'], data['MAX_STEP']) 
+                    step = round(step) if data['TYPE'] == 'int' else step
+                    payload[data['NAME']] = max(payload[data['NAME']]+step, data['RANGE_START']) if step < 0 else min(payload[data['NAME']]+step, data['RANGE_END'])
 
         return payload
