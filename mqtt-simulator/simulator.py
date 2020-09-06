@@ -27,6 +27,12 @@ class Simulator:
                     for id in range(topic['RANGE_START'], topic['RANGE_END']+1):
                         topic_url = topic['PREFIX'] + '/' + str(id)
                         self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_retain_probability, topic_time_interval))
+                elif topic['TYPE'] == 'list':
+                    # create multiple topics with format: /{PREFIX}/{item}
+                    for item in topic['LIST']:
+                        topic_url = topic['PREFIX'] + '/' + str(item)
+                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_retain_probability, topic_time_interval))
+                    
 
     def run(self):
         for topic in self.topics:

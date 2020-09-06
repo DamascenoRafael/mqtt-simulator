@@ -14,7 +14,7 @@ Easy-to-configure MQTT simulator written in [Python 3](https://www.python.org/) 
 * Small and easy-to-configure simulator for publishing data to a broker  
 * Configuration from a single JSON file  
 * Connection on pre-defined fixed topics  
-* Connection on multiple topics that have a variable id at the end  
+* Connection on multiple topics that have a variable id or items at the end  
 * Random variation of data generated according to configuration parameters  
 
 ## Getting Started
@@ -68,9 +68,9 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | --- | --- | --- | --- |
     | `BROKER_URL` | string | --- | yes |
     | `BROKER_PORT` | number | --- | yes |
-    | `TOPICS` | list of objects | --- | yes |
+    | `TOPICS` | array\<Objects> | --- | yes |
 
-* The key **TOPICS** has a list of objects where each one has the format:
+* The key **TOPICS** has a array of objects where each one has the format:
 
     ```json
     {
@@ -90,13 +90,14 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | --- | --- | --- | --- |
     | `TYPE` | string | --- | yes |
     | `PREFIX` | string | --- | yes |
+    | `LIST` | array\<any> | --- | if `TYPE` is `"list"` |
     | `RANGE_START` | number | --- | if `TYPE` is `"multiple"`  |
     | `RANGE_END` | number | --- | if `TYPE` is `"multiple"`  |
     | `TIME_INTERVAL` | number | --- | yes |
     | `RETAIN_PROBABILITY` | number | --- | yes |
-    | `DATA` | list of objects | --- | yes |
+    | `DATA` | array\<Objects> | --- | yes |
 
-* The key **DATA** inside TOPICS has a list of objects where each one has the format:
+* The key **DATA** inside TOPICS has a array of objects where each one has the format:
 
     ```json
     {
