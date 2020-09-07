@@ -35,7 +35,7 @@ pip3 install -r requirements.txt
 
 #### Running
 
-The simulator settings can be changed in the `config/settings.json` file.
+The default simulator settings can be changed in the `config/settings.json` file.
 
 ```shell
 python3 mqtt-simulator/main.py
@@ -66,9 +66,9 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
 
     | Key | Type | Description | Required |
     | --- | --- | --- | --- |
-    | `BROKER_URL` | string | --- | yes |
-    | `BROKER_PORT` | number | --- | yes |
-    | `TOPICS` | array\<Objects> | --- | yes |
+    | `BROKER_URL` | string | The broker URL where the data will be published | yes |
+    | `BROKER_PORT` | number | The port used by the broker | yes |
+    | `TOPICS` | array\<Objects> | Specification of topics and how they will be published | yes |
 
 * The key **TOPICS** has a array of objects where each one has the format:
 
@@ -88,14 +88,14 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
 
     | Key | Type | Description | Required |
     | --- | --- | --- | --- |
-    | `TYPE` | string | --- | yes |
-    | `PREFIX` | string | --- | yes |
-    | `LIST` | array\<any> | --- | if `TYPE` is `"list"` |
-    | `RANGE_START` | number | --- | if `TYPE` is `"multiple"`  |
-    | `RANGE_END` | number | --- | if `TYPE` is `"multiple"`  |
-    | `TIME_INTERVAL` | number | --- | yes |
-    | `RETAIN_PROBABILITY` | number | --- | yes |
-    | `DATA` | array\<Objects> | --- | yes |
+    | `TYPE` | string | It can be `"single"`, `"multiple"` or `"list"` | yes |
+    | `PREFIX` | string | Prefix of the topic URL, depending on the `TYPE` it can be concatenated to `/<id>` or `/<item>` | yes |
+    | `LIST` | array\<any> | When the `TYPE` is `"list"` the topic prefix will be concatenated with `/<item>` for each item in the array | if `TYPE` is `"list"` |
+    | `RANGE_START` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_START` will be the first number  | if `TYPE` is `"multiple"`  |
+    | `RANGE_END` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_END` will be the last number | if `TYPE` is `"multiple"`  |
+    | `TIME_INTERVAL` | number | Time interval in seconds between submissions towards the topic | yes |
+    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the previous data being retained and sent again | yes |
+    | `DATA` | array\<Objects> | Specification of the data that will form the JSON to be sent in the topic | yes |
 
 * The key **DATA** inside TOPICS has a array of objects where each one has the format:
 
@@ -111,11 +111,11 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
 
     | Key | Type | Description | Required |
     | --- | --- | --- | --- |
-    | `NAME` | string | --- | yes |
-    | `TYPE` | string | --- | yes |
-    | `RANGE_START` | number | --- | yes |
-    | `RANGE_END` | number | --- | yes |
-    | `MAX_STEP` | number | --- | yes |
+    | `NAME` | string | JSON property name to be sent | yes |
+    | `TYPE` | string | It can be `"int"`, `"float"` or `"bool"` | yes |
+    | `RANGE_START` | number | Minimum value that the property can assume | If `TYPE` is different from `"bool"` |
+    | `RANGE_END` | number | Maximum value that the property can assume | If `TYPE` is different from `"bool"` |
+    | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | If `TYPE` is different from `"bool"` |
 
 ## Authors
 
