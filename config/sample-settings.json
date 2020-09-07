@@ -1,0 +1,62 @@
+{
+    "BROKER_URL": "mqtt.eclipse.org",
+    "BROKER_PORT": 1883,
+    "TOPICS": [
+        {
+            "TYPE": "multiple",
+            "PREFIX": "lamp",
+            "RANGE_START": 1,
+            "RANGE_END": 2,
+            "TIME_INTERVAL": 4,
+            "RETAIN_PROBABILITY": 0.85,
+            "DATA": [
+                {
+                    "NAME": "on",
+                    "TYPE": "bool"
+                },
+                {
+                    "NAME": "temperature",
+                    "TYPE": "int",
+                    "MIN_VALUE": 2700,
+                    "MAX_VALUE": 6500,
+                    "MAX_STEP": 250
+                }
+            ]
+        },
+        {
+            "TYPE": "single",
+            "PREFIX": "air_quality",
+            "TIME_INTERVAL": 6,
+            "RETAIN_PROBABILITY": 0.9,
+            "DATA": [
+                {
+                    "NAME": "pollution_particles",
+                    "TYPE": "float",
+                    "MIN_VALUE": 0,
+                    "MAX_VALUE": 1,
+                    "MAX_STEP": 0.15
+                },
+                {
+                    "NAME": "alert",
+                    "TYPE": "bool"
+                }
+            ]
+        },
+        {
+            "TYPE": "list",
+            "PREFIX": "temperature",
+            "LIST": ["roof", "basement"],
+            "TIME_INTERVAL": 8, 
+            "RETAIN_PROBABILITY": 0.5,
+            "DATA": [
+                {
+                    "NAME": "temperature",
+                    "TYPE": "float",
+                    "MIN_VALUE": 20,
+                    "MAX_VALUE": 55,
+                    "MAX_STEP": 3
+                }
+            ]
+        }
+    ]
+}
