@@ -54,9 +54,9 @@ class TopicAuto(Topic, threading.Thread):
             # generate initial data
             for data in self.topic_data:
                 if data['TYPE'] == 'int':
-                    payload[data['NAME']] = random.randint(data['RANGE_START'], data['RANGE_END'])
+                    payload[data['NAME']] = random.randint(data['MIN_VALUE'], data['MAX_VALUE'])
                 elif data['TYPE'] == 'float':
-                    payload[data['NAME']] = random.uniform(data['RANGE_START'], data['RANGE_END'])
+                    payload[data['NAME']] = random.uniform(data['MIN_VALUE'], data['MAX_VALUE'])
                 elif data['TYPE'] == 'bool':
                     payload[data['NAME']] = random.choice([True, False])
         else:
@@ -70,6 +70,6 @@ class TopicAuto(Topic, threading.Thread):
                 else:
                     step = random.uniform(-data['MAX_STEP'], data['MAX_STEP']) 
                     step = round(step) if data['TYPE'] == 'int' else step
-                    payload[data['NAME']] = max(payload[data['NAME']]+step, data['RANGE_START']) if step < 0 else min(payload[data['NAME']]+step, data['RANGE_END'])
+                    payload[data['NAME']] = max(payload[data['NAME']]+step, data['MIN_VALUE']) if step < 0 else min(payload[data['NAME']]+step, data['MAX_VALUE'])
 
         return payload

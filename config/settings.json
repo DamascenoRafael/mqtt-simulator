@@ -13,22 +13,22 @@
                 {
                     "NAME": "beat",
                     "TYPE": "int",
-                    "RANGE_START": 50,
-                    "RANGE_END": 190,
+                    "MIN_VALUE": 50,
+                    "MAX_VALUE": 190,
                     "MAX_STEP": 5
                 },
                 {
                     "NAME": "sop2",
                     "TYPE": "int",
-                    "RANGE_START": 50,
-                    "RANGE_END": 100,
+                    "MIN_VALUE": 50,
+                    "MAX_VALUE": 100,
                     "MAX_STEP": 2
                 },
                 {
                     "NAME": "temp",
                     "TYPE": "float",
-                    "RANGE_START": 34,
-                    "RANGE_END": 40,
+                    "MIN_VALUE": 34,
+                    "MAX_VALUE": 40,
                     "MAX_STEP": 0.2
                 }
             ]
@@ -42,8 +42,8 @@
                 {
                     "NAME": "alertType",
                     "TYPE": "int",
-                    "RANGE_START": 1,
-                    "RANGE_END": 4,
+                    "MIN_VALUE": 1,
+                    "MAX_VALUE": 4,
                     "MAX_STEP": 3
                 }
             ]

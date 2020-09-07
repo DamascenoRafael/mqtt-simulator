@@ -113,8 +113,8 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | --- | --- | --- | --- |
     | `NAME` | string | JSON property name to be sent | yes |
     | `TYPE` | string | It can be `"int"`, `"float"` or `"bool"` | yes |
-    | `RANGE_START` | number | Minimum value that the property can assume | If `TYPE` is different from `"bool"` |
-    | `RANGE_END` | number | Maximum value that the property can assume | If `TYPE` is different from `"bool"` |
+    | `MIN_VALUE` | number | Minimum value that the property can assume | If `TYPE` is different from `"bool"` |
+    | `MAX_VALUE` | number | Maximum value that the property can assume | If `TYPE` is different from `"bool"` |
     | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | If `TYPE` is different from `"bool"` |
 
 ## Authors
