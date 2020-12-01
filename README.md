@@ -103,8 +103,8 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     {
         "NAME": "temperature",
         "TYPE": "float",
-        "RANGE_START": 30,
-        "RANGE_END": 40,
+        "MIN_VALUE": 30,
+        "MAX_VALUE": 40,
         "MAX_STEP": 0.2
     }
     ```
