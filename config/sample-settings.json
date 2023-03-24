@@ -1,5 +1,5 @@
 {
-    "BROKER_URL": "mqtt.eclipse.org",
+    "BROKER_URL": "mqtt.eclipseprojects.io",
     "BROKER_PORT": 1883,
     "TOPICS": [
         {
@@ -39,6 +39,22 @@
                 {
                     "NAME": "alert",
                     "TYPE": "bool"
+                }
+            ]
+        },
+        {
+            "TYPE": "single",
+            "PREFIX": "freezer",
+            "TIME_INTERVAL": 6,
+            "RETAIN_PROBABILITY": 0.1,
+            "DATA": [
+                {
+                    "NAME": "temperature",
+                    "TYPE": "function",
+                    "MATH_EXPRESSION": "2*math.pow(x,2)+1",
+                    "MIN_VALUE": 0,
+                    "MAX_VALUE": 5,
+                    "MAX_STEP": 0.5
                 }
             ]
         },

@@ -4,6 +4,7 @@ import random
 import threading
 from abc import ABC, abstractmethod
 import paho.mqtt.client as mqtt
+from evaluator import evaluate
 
 class Topic(ABC):
     def __init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability):
@@ -44,7 +45,7 @@ class TopicAuto(Topic, threading.Thread):
         while True:
             payload = self.generate_data()
             self.old_payload = payload
-            self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=2, retain= False) 
+            self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=2, retain=False) 
             time.sleep(self.time_interval)
 
     def generate_data(self):
@@ -59,6 +60,11 @@ class TopicAuto(Topic, threading.Thread):
                     payload[data['NAME']] = random.uniform(data['MIN_VALUE'], data['MAX_VALUE'])
                 elif data['TYPE'] == 'bool':
                     payload[data['NAME']] = random.choice([True, False])
+                elif data['TYPE'] == 'expression':
+                    self.expression = evaluate(data['MATH_EXPRESSION'])
+                    self.expression_variable = data['MIN_VALUE']
+                    payload[data['NAME']] = self.expression(self.expression_variable)
+
         else:
             # generate next data
             payload = self.old_payload
@@ -67,6 +73,14 @@ class TopicAuto(Topic, threading.Thread):
                     continue
                 if data['TYPE'] == 'bool':
                     payload[data['NAME']] = not payload[data['NAME']]
+                elif data['TYPE'] == 'expression':
+                    step = random.uniform(0, data['MAX_STEP']) 
+                    if self.expression_variable >= data['MAX_VALUE']:
+                            self.expression_variable = data['MIN_VALUE']
+                    self.expression_variable += step
+                    current_value = self.expression(self.expression_variable)
+                    payload[data['NAME']] = current_value
+
                 else:
                     step = random.uniform(-data['MAX_STEP'], data['MAX_STEP']) 
                     step = round(step) if data['TYPE'] == 'int' else step

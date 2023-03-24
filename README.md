@@ -102,7 +102,8 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     ```json
     {
         "NAME": "temperature",
-        "TYPE": "float",
+        "TYPE": "expression",
+        "MATH_EXPRESSION": "x**2", //or "math.pow(x,2)"
         "MIN_VALUE": 30,
         "MAX_VALUE": 40,
         "MAX_STEP": 0.2
@@ -112,10 +113,11 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | Key | Type | Description | Required |
     | --- | --- | --- | --- |
     | `NAME` | string | JSON property name to be sent | yes |
-    | `TYPE` | string | It can be `"int"`, `"float"` or `"bool"` | yes |
-    | `MIN_VALUE` | number | Minimum value that the property can assume | If `TYPE` is different from `"bool"` |
-    | `MAX_VALUE` | number | Maximum value that the property can assume | If `TYPE` is different from `"bool"` |
-    | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | If `TYPE` is different from `"bool"` |
+    | `TYPE` | string | It can be `"int"`, `"float"`, `"bool"` or `"expression"` | yes |
+    | `MATH_EXPRESSION` | string | Math expression writen in a *Pythonic* way<br/> Also accept fuctions from [Math modules](https://docs.python.org/3/library/math.html)  | If `TYPE` is `"expression"` | 
+    | `MIN_VALUE` | number | Minimum value that the property can assume<br/>When `TYPE` is `"expression"` works like minimum value of `MATH_EXPRESSION` domain | If `TYPE` is different from `"bool"` |
+    | `MAX_VALUE` | number | Maximum value that the property can assume<br/>When `TYPE` is `"expression"` works like maximum value of `MATH_EXPRESSION` domain | If `TYPE` is different from `"bool"` |
+    | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next <br/>When `TYPE` is `"expression"` this change is applied to the `MATH_EXPRESSION` variable | If `TYPE` is different from `"bool"` |
 
 ## Authors
 
