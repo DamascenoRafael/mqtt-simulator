@@ -50,7 +50,6 @@ class TopicAuto(Topic, threading.Thread):
 
     def generate_data(self):
         payload = {}
-        
         if self.old_payload == None:
             # generate initial data
             for data in self.topic_data:
@@ -62,7 +61,7 @@ class TopicAuto(Topic, threading.Thread):
                     payload[data['NAME']] = random.choice([True, False])
                 elif data['TYPE'] == 'expression':
                     self.expression = evaluate(data['MATH_EXPRESSION'])
-                    self.expression_variable = data['MIN_VALUE']
+                    self.expression_variable = data['INTERVAL_START']
                     payload[data['NAME']] = self.expression(self.expression_variable)
 
         else:
@@ -74,13 +73,13 @@ class TopicAuto(Topic, threading.Thread):
                 if data['TYPE'] == 'bool':
                     payload[data['NAME']] = not payload[data['NAME']]
                 elif data['TYPE'] == 'expression':
-                    step = random.uniform(0, data['MAX_STEP']) 
-                    if self.expression_variable >= data['MAX_VALUE']:
-                            self.expression_variable = data['MIN_VALUE']
+                    step = random.uniform(data['MIN_DELTA'], data['MAX_DELTA']) 
+                    if self.expression_variable >= data['INTERVAL_END']:
+                        self.expression_variable = data['INTERVAL_START']
+                        step = 0
                     self.expression_variable += step
                     current_value = self.expression(self.expression_variable)
-                    payload[data['NAME']] = current_value
-
+                    payload[data['NAME']] = current_value 
                 else:
                     step = random.uniform(-data['MAX_STEP'], data['MAX_STEP']) 
                     step = round(step) if data['TYPE'] == 'int' else step

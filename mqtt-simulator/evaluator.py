@@ -5,7 +5,6 @@ ALLOWED_NAMES = {
 }
 
 def evaluate(expression):
-
     lambda_expression = "lambda x: "+expression
     code = compile(lambda_expression, "<string>", "eval")
 
