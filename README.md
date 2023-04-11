@@ -105,7 +105,10 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
         "MIN_VALUE": 30,
         "MAX_VALUE": 40,
         "MAX_STEP": 0.2,
-        "RETAIN_PROBABILITY": 0.5
+        "RETAIN_PROBABILITY": 0.5,
+        "RESET_PROBABILITY": 0.1,
+        "INCREASE_PROBABILITY": 0.7,
+        "RESTART_ON_BOUNDARIES": true
     }
     ```
 
@@ -118,6 +121,9 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | `MAX_VALUE` | number | Maximum value that the property can assume | if `TYPE` is different from `"bool"` |
     | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | if `TYPE` is different from `"bool"` |
     | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being retained and sent again | yes |
+    | `RESET_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being reset to `INITIAL_VALUE` | optional, default is 0 |
+    | `INCREASE_PROBABILITY` | number | Number between 0 and 1 for the probability of the next value being greater than the previous one | optional, default is 0.5 (same probability to increase or decrease). Only valid if `TYPE` is different from `"bool"` |
+    | `RESTART_ON_BOUNDARIES` | bool | When true and the value reaches `MAX_VALUE` or `MIN_VALUE` the next value will be the `INITIAL_VALUE` | optional, default is false. Only valid if `TYPE` is different from `"bool"` |
 
 ## Authors
 

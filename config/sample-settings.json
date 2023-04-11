@@ -21,7 +21,10 @@
                     "MIN_VALUE": 2700,
                     "MAX_VALUE": 6500,
                     "MAX_STEP": 250,
-                    "RETAIN_PROBABILITY": 0.3
+                    "RETAIN_PROBABILITY": 0.3,
+                    "RESET_PROBABILITY": 0.1,
+                    "INCREASE_PROBABILITY": 0.8,
+                    "RESTART_ON_BOUNDARIES": true
                 }
             ]
         },
@@ -57,7 +60,8 @@
                     "MIN_VALUE": 20,
                     "MAX_VALUE": 55,
                     "MAX_STEP": 3,
-                    "RETAIN_PROBABILITY": 0.5
+                    "RETAIN_PROBABILITY": 0.5,
+                    "INCREASE_PROBABILITY": 0.6
                 }
             ]
         }

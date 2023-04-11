@@ -57,14 +57,21 @@ class TopicAuto(Topic, threading.Thread):
             return random.choice([True, False])
 
     def generate_next_value(self, data, old_value):
+        if 'RESET_PROBABILITY' in data and random.random() < data['RESET_PROBABILITY']:
+            return self.generate_initial_value(data)
+        if 'RESTART_ON_BOUNDARIES' in data and data['RESTART_ON_BOUNDARIES'] and (old_value == data['MIN_VALUE'] or old_value == data['MAX_VALUE']):
+            return self.generate_initial_value(data)
         if random.random() < data['RETAIN_PROBABILITY']:
             return old_value
         if data['TYPE'] == 'bool':
             return not old_value
         else:
             # generating value for int or float
-            step = random.uniform(-data['MAX_STEP'], data['MAX_STEP']) 
+            step = random.uniform(0, data['MAX_STEP'])
             step = round(step) if data['TYPE'] == 'int' else step
+            increase_probability = data['INCREASE_PROBABILITY'] if 'INCREASE_PROBABILITY' in data else 0.5
+            if random.random() < (1 - increase_probability):
+                step *= -1
             return max(old_value + step, data['MIN_VALUE']) if step < 0 else min(old_value + step, data['MAX_VALUE'])
 
     def generate_payload(self):
