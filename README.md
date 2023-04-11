@@ -79,7 +79,6 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
         "RANGE_START": 1,
         "RANGE_END": 2,
         "TIME_INTERVAL": 25,
-        "RETAIN_PROBABILITY": 0.5,
         "DATA": [
             ...
         ]
@@ -94,7 +93,6 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | `RANGE_START` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_START` will be the first number  | if `TYPE` is `"multiple"`  |
     | `RANGE_END` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_END` will be the last number | if `TYPE` is `"multiple"`  |
     | `TIME_INTERVAL` | number | Time interval in seconds between submissions towards the topic | yes |
-    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the previous data being retained and sent again | yes |
     | `DATA` | array\<Objects> | Specification of the data that will form the JSON to be sent in the topic | yes |
 
 * The key **DATA** inside TOPICS has a array of objects where each one has the format:
@@ -103,9 +101,14 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     {
         "NAME": "temperature",
         "TYPE": "float",
+        "INITIAL_VALUE": 35,
         "MIN_VALUE": 30,
         "MAX_VALUE": 40,
-        "MAX_STEP": 0.2
+        "MAX_STEP": 0.2,
+        "RETAIN_PROBABILITY": 0.5,
+        "RESET_PROBABILITY": 0.1,
+        "INCREASE_PROBABILITY": 0.7,
+        "RESTART_ON_BOUNDARIES": true
     }
     ```
 
@@ -113,9 +116,14 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | --- | --- | --- | --- |
     | `NAME` | string | JSON property name to be sent | yes |
     | `TYPE` | string | It can be `"int"`, `"float"` or `"bool"` | yes |
-    | `MIN_VALUE` | number | Minimum value that the property can assume | If `TYPE` is different from `"bool"` |
-    | `MAX_VALUE` | number | Maximum value that the property can assume | If `TYPE` is different from `"bool"` |
-    | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | If `TYPE` is different from `"bool"` |
+    | `INITIAL_VALUE` | number or bool (same as defined in `TYPE`) | Initial value that the property will assume when the simulation starts (random otherwise) | optional |
+    | `MIN_VALUE` | number | Minimum value that the property can assume | if `TYPE` is different from `"bool"` |
+    | `MAX_VALUE` | number | Maximum value that the property can assume | if `TYPE` is different from `"bool"` |
+    | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | if `TYPE` is different from `"bool"` |
+    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being retained and sent again | yes |
+    | `RESET_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being reset to `INITIAL_VALUE` | optional, default is 0 |
+    | `INCREASE_PROBABILITY` | number | Number between 0 and 1 for the probability of the next value being greater than the previous one | optional, default is 0.5 (same probability to increase or decrease). Only valid if `TYPE` is different from `"bool"` |
+    | `RESTART_ON_BOUNDARIES` | bool | When true and the value reaches `MAX_VALUE` or `MIN_VALUE` the next value will be the `INITIAL_VALUE` | optional, default is false. Only valid if `TYPE` is different from `"bool"` |
 
 ## Authors
 
