@@ -47,7 +47,9 @@ class TopicAuto(Topic, threading.Thread):
             time.sleep(self.time_interval)
 
     def generate_initial_value(self, data):
-        if data['TYPE'] == 'int':
+        if 'INITIAL_VALUE' in data:
+            return data['INITIAL_VALUE']
+        elif data['TYPE'] == 'int':
             return random.randint(data['MIN_VALUE'], data['MAX_VALUE'])
         elif data['TYPE'] == 'float':
             return random.uniform(data['MIN_VALUE'], data['MAX_VALUE'])

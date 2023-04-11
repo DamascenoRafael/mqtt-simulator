@@ -17,6 +17,7 @@
                 {
                     "NAME": "temperature",
                     "TYPE": "int",
+                    "INITIAL_VALUE": 2750,
                     "MIN_VALUE": 2700,
                     "MAX_VALUE": 6500,
                     "MAX_STEP": 250,
