@@ -117,7 +117,7 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | `MIN_VALUE` | number | Minimum value that the property can assume | if `TYPE` is different from `"bool"` |
     | `MAX_VALUE` | number | Maximum value that the property can assume | if `TYPE` is different from `"bool"` |
     | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | if `TYPE` is different from `"bool"` |
-    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the previous data being retained and sent again | yes |
+    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being retained and sent again | yes |
 
 ## Authors
 
