@@ -8,18 +8,23 @@
             "RANGE_START": 1,
             "RANGE_END": 2,
             "TIME_INTERVAL": 4,
-            "RETAIN_PROBABILITY": 0.85,
             "DATA": [
                 {
                     "NAME": "on",
-                    "TYPE": "bool"
+                    "TYPE": "bool",
+                    "RETAIN_PROBABILITY": 0.85
                 },
                 {
                     "NAME": "temperature",
                     "TYPE": "int",
+                    "INITIAL_VALUE": 2750,
                     "MIN_VALUE": 2700,
                     "MAX_VALUE": 6500,
-                    "MAX_STEP": 250
+                    "MAX_STEP": 250,
+                    "RETAIN_PROBABILITY": 0.3,
+                    "RESET_PROBABILITY": 0.1,
+                    "INCREASE_PROBABILITY": 0.8,
+                    "RESTART_ON_BOUNDARIES": true
                 }
             ]
         },
@@ -27,18 +32,19 @@
             "TYPE": "single",
             "PREFIX": "air_quality",
             "TIME_INTERVAL": 6,
-            "RETAIN_PROBABILITY": 0.9,
             "DATA": [
                 {
                     "NAME": "pollution_particles",
                     "TYPE": "float",
                     "MIN_VALUE": 0,
                     "MAX_VALUE": 1,
-                    "MAX_STEP": 0.15
+                    "MAX_STEP": 0.15,
+                    "RETAIN_PROBABILITY": 0.9
                 },
                 {
                     "NAME": "alert",
-                    "TYPE": "bool"
+                    "TYPE": "bool",
+                    "RETAIN_PROBABILITY": 0.9
                 }
             ]
         },
@@ -80,15 +86,16 @@
             "TYPE": "list",
             "PREFIX": "temperature",
             "LIST": ["roof", "basement"],
-            "TIME_INTERVAL": 8, 
-            "RETAIN_PROBABILITY": 0.5,
+            "TIME_INTERVAL": 8,
             "DATA": [
                 {
                     "NAME": "temperature",
                     "TYPE": "float",
                     "MIN_VALUE": 20,
                     "MAX_VALUE": 55,
-                    "MAX_STEP": 3
+                    "MAX_STEP": 3,
+                    "RETAIN_PROBABILITY": 0.5,
+                    "INCREASE_PROBABILITY": 0.6
                 }
             ]
         }
