@@ -83,5 +83,5 @@ class TopicAuto(Topic, threading.Thread):
         else:
             # generate next data
             for data in self.topic_data:
-                payload[data['NAME']] = self.generate_next_value(data, payload[data['NAME']])
+                payload[data['NAME']] = self.generate_next_value(data, self.old_payload[data['NAME']])
         return payload
