@@ -25,41 +25,42 @@ For `type` = `expression` we need five required configuration parameters: `MATH_
   * When the variable `x > INTERVAL_END`, the function will be evaluated, and then the variable will be reset to `x=INTERVAL_START`. So keep in mind that the real interval is `[INTERVAL_START,INTERVAL_END+MAX_DELTA)`.
 
 * `MIN_DELTA` and `MAX_DELTA`:
-  * It is possible to set both with the same value, in this case, it is expected that the curves are more similar between the "loops", and may be identical if `RETAIN_PROBABILITY = 0`
+  * It is possible to set both with the same value, in this case, it is expected that the curves are more similar between the "loops", and may be identical if `RETAIN_PROBABILITY = 0`.
   
-  
-
+* Others parameters:
+  * Although `RESET_PROBABILITY` and `INITIAL_VALUE` works, keep in mind that we do not check if it is a possible value for the `MATH_EXPRESSION`.
 
 ## Example 1 - Freezer Temperature
 
-In the example below the `MATH_EXPRESION `= $2x²+1$, `INTERVAL_START = 0`, `INTERVAL_END = 5`, `MIN_DELTA = 0` and `MAX_DELTA = 0.5`, so it is expected that the generated values are between 1 and 61.5.
+In the example below the `MATH_EXPRESION `= $2x²+1$, `INTERVAL_START = 0`, `INTERVAL_END = 5`, `MIN_DELTA = 0` and `MAX_DELTA = 0.5`, so it is expected that the generated values are between 1 and 61.5, and the curves should be slightly different.
 
 
 ```json
-{
+ {
     "TYPE": "single",
     "PREFIX": "freezer",
     "TIME_INTERVAL": 6,
-    "RETAIN_PROBABILITY": 0.1,
     "DATA": [
         {
             "NAME": "temperature",
             "TYPE": "expression",
+            "RETAIN_PROBABILITY": 0.1,
             "MATH_EXPRESSION": "2*math.pow(x,2)+1",
             "INTERVAL_START": 0,
             "INTERVAL_END": 5,
-            "MIN_DELTA": 0,
+            "MIN_DELTA": 0.5,
             "MAX_DELTA": 0.5
         }
     ]
 }
+
 ```
 
 ![Freezer Temperature Example](images/expression-example-freezer.gif)
 
 ## Example 2 - Car Velocity
 
-In the example below the `MATH_EXPRESION` = $\sqrt{75x}$, `INTERVAL_START = 0`, `INTERVAL_END = 100`, `MIN_DELTA = 10` and `MAX_DELTA = 10`, so it is expected that the generated values are between 0 and 87. As `REATIN_PROBABILITY = 0`, the curves must be identical.
+In the example below the `MATH_EXPRESION` = $\sqrt{75x}$, `INTERVAL_START = 0`, `INTERVAL_END = 100`, `MIN_DELTA = 10` and `MAX_DELTA = 10`, so it is expected that the generated values are between 0 and 87. As `REATIN_PROBABILITY = 0` and the `MIN_DELTA` and `MAX_DELTA` are identicals, the curves must be identicals.
 
 
 ```json
@@ -67,11 +68,11 @@ In the example below the `MATH_EXPRESION` = $\sqrt{75x}$, `INTERVAL_START = 0`, 
     "TYPE": "single",
     "PREFIX": "car",
     "TIME_INTERVAL": 6,
-    "RETAIN_PROBABILITY": 0,
     "DATA": [
         {
             "NAME": "velocity",
             "TYPE": "expression",
+            "RETAIN_PROBABILITY": 0,
             "MATH_EXPRESSION": "(75*x)**(1/2)",
             "INTERVAL_START": 0,
             "INTERVAL_END": 100,

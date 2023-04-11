@@ -4,47 +4,49 @@
     "TOPICS": [
         {
             "TYPE": "multiple",
-            "PREFIX": "lamp",
-            "RANGE_START": 1,
-            "RANGE_END": 2,
-            "TIME_INTERVAL": 4,
+            "PREFIX": "oximeters",
+            "RANGE_START": 2,
+            "RANGE_END": 10,
+            "TIME_INTERVAL": 5,
             "DATA": [
                 {
-                    "NAME": "on",
-                    "TYPE": "bool",
-                    "RETAIN_PROBABILITY": 0.85
+                    "NAME": "beat",
+                    "TYPE": "int",
+                    "MIN_VALUE": 50,
+                    "MAX_VALUE": 190,
+                    "MAX_STEP": 5,
+                    "RETAIN_PROBABILITY": 0.25
                 },
                 {
-                    "NAME": "temperature",
+                    "NAME": "sop2",
                     "TYPE": "int",
-                    "INITIAL_VALUE": 2750,
-                    "MIN_VALUE": 2700,
-                    "MAX_VALUE": 6500,
-                    "MAX_STEP": 250,
-                    "RETAIN_PROBABILITY": 0.3,
-                    "RESET_PROBABILITY": 0.1,
-                    "INCREASE_PROBABILITY": 0.8,
-                    "RESTART_ON_BOUNDARIES": true
+                    "MIN_VALUE": 50,
+                    "MAX_VALUE": 100,
+                    "MAX_STEP": 2,
+                    "RETAIN_PROBABILITY": 0.25
+                },
+                {
+                    "NAME": "temp",
+                    "TYPE": "float",
+                    "MIN_VALUE": 34,
+                    "MAX_VALUE": 40,
+                    "MAX_STEP": 0.2,
+                    "RETAIN_PROBABILITY": 0.5
                 }
             ]
         },
         {
             "TYPE": "single",
-            "PREFIX": "air_quality",
-            "TIME_INTERVAL": 6,
+            "PREFIX": "alerts/2",
+            "TIME_INTERVAL": 60,
             "DATA": [
                 {
-                    "NAME": "pollution_particles",
-                    "TYPE": "float",
-                    "MIN_VALUE": 0,
-                    "MAX_VALUE": 1,
-                    "MAX_STEP": 0.15,
-                    "RETAIN_PROBABILITY": 0.9
-                },
-                {
-                    "NAME": "alert",
-                    "TYPE": "bool",
-                    "RETAIN_PROBABILITY": 0.9
+                    "NAME": "alertType",
+                    "TYPE": "int",
+                    "MIN_VALUE": 1,
+                    "MAX_VALUE": 4,
+                    "MAX_STEP": 3,
+                    "RETAIN_PROBABILITY": 0
                 }
             ]
         },
@@ -52,11 +54,11 @@
             "TYPE": "single",
             "PREFIX": "freezer",
             "TIME_INTERVAL": 6,
-            "RETAIN_PROBABILITY": 0.1,
             "DATA": [
                 {
                     "NAME": "temperature",
                     "TYPE": "expression",
+                    "RETAIN_PROBABILITY": 0.1,
                     "MATH_EXPRESSION": "2*math.pow(x,2)+1",
                     "INTERVAL_START": 0,
                     "INTERVAL_END": 5,
@@ -69,33 +71,16 @@
             "TYPE": "single",
             "PREFIX": "car",
             "TIME_INTERVAL": 6,
-            "RETAIN_PROBABILITY": 0,
             "DATA": [
                 {
                     "NAME": "velocity",
                     "TYPE": "expression",
+                    "RETAIN_PROBABILITY": 0.5,
                     "MATH_EXPRESSION": "(75*x)**(1/2)",
                     "INTERVAL_START": 0,
                     "INTERVAL_END": 100,
                     "MIN_DELTA": 10,
                     "MAX_DELTA": 10
-                }
-            ]
-        },
-        {
-            "TYPE": "list",
-            "PREFIX": "temperature",
-            "LIST": ["roof", "basement"],
-            "TIME_INTERVAL": 8,
-            "DATA": [
-                {
-                    "NAME": "temperature",
-                    "TYPE": "float",
-                    "MIN_VALUE": 20,
-                    "MAX_VALUE": 55,
-                    "MAX_STEP": 3,
-                    "RETAIN_PROBABILITY": 0.5,
-                    "INCREASE_PROBABILITY": 0.6
                 }
             ]
         }
