@@ -17,21 +17,20 @@ class Simulator:
             for topic in config['TOPICS']:
                 topic_data = topic['DATA']
                 topic_time_interval = topic['TIME_INTERVAL']
-                topic_retain_probability = topic['RETAIN_PROBABILITY']
                 if topic['TYPE'] == 'single':
                     # create single topic with format: /{PREFIX}
                     topic_url = topic['PREFIX']
-                    self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_retain_probability, topic_time_interval))
+                    self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_time_interval))
                 elif topic['TYPE'] == 'multiple':
                     # create multiple topics with format: /{PREFIX}/{id}
                     for id in range(topic['RANGE_START'], topic['RANGE_END']+1):
                         topic_url = topic['PREFIX'] + '/' + str(id)
-                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_retain_probability, topic_time_interval))
+                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_time_interval))
                 elif topic['TYPE'] == 'list':
                     # create multiple topics with format: /{PREFIX}/{item}
                     for item in topic['LIST']:
                         topic_url = topic['PREFIX'] + '/' + str(item)
-                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_retain_probability, topic_time_interval))
+                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, topic_time_interval))
                     
 
     def run(self):

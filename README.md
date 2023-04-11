@@ -79,7 +79,6 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
         "RANGE_START": 1,
         "RANGE_END": 2,
         "TIME_INTERVAL": 25,
-        "RETAIN_PROBABILITY": 0.5,
         "DATA": [
             ...
         ]
@@ -94,7 +93,6 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | `RANGE_START` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_START` will be the first number  | if `TYPE` is `"multiple"`  |
     | `RANGE_END` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_END` will be the last number | if `TYPE` is `"multiple"`  |
     | `TIME_INTERVAL` | number | Time interval in seconds between submissions towards the topic | yes |
-    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the previous data being retained and sent again | yes |
     | `DATA` | array\<Objects> | Specification of the data that will form the JSON to be sent in the topic | yes |
 
 * The key **DATA** inside TOPICS has a array of objects where each one has the format:
@@ -105,7 +103,8 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
         "TYPE": "float",
         "MIN_VALUE": 30,
         "MAX_VALUE": 40,
-        "MAX_STEP": 0.2
+        "MAX_STEP": 0.2,
+        "RETAIN_PROBABILITY": 0.5
     }
     ```
 
@@ -116,6 +115,7 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | `MIN_VALUE` | number | Minimum value that the property can assume | If `TYPE` is different from `"bool"` |
     | `MAX_VALUE` | number | Maximum value that the property can assume | If `TYPE` is different from `"bool"` |
     | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | If `TYPE` is different from `"bool"` |
+    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the previous data being retained and sent again | yes |
 
 ## Authors
 

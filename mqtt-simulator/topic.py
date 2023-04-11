@@ -6,12 +6,11 @@ from abc import ABC, abstractmethod
 import paho.mqtt.client as mqtt
 
 class Topic(ABC):
-    def __init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability):
+    def __init__(self, broker_url, broker_port, topic_url, topic_data):
         self.broker_url = broker_url
         self.broker_port = broker_port
         self.topic_url = topic_url
         self.topic_data = topic_data
-        self.retain_probability = retain_probability
         self.client = None
 
     def connect(self):
@@ -33,8 +32,8 @@ class Topic(ABC):
 
 
 class TopicAuto(Topic, threading.Thread):
-    def __init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability, time_interval):
-        Topic.__init__(self, broker_url, broker_port, topic_url, topic_data, retain_probability)
+    def __init__(self, broker_url, broker_port, topic_url, topic_data, time_interval):
+        Topic.__init__(self, broker_url, broker_port, topic_url, topic_data)
         threading.Thread.__init__(self, args = (), kwargs = None)
         self.time_interval = time_interval
         self.old_payload = None
@@ -56,7 +55,7 @@ class TopicAuto(Topic, threading.Thread):
             return random.choice([True, False])
 
     def generate_next_value(self, data, old_value):
-        if random.random() > (1 - self.retain_probability):
+        if random.random() < data['RETAIN_PROBABILITY']:
             return old_value
         if data['TYPE'] == 'bool':
             return not old_value
