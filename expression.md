@@ -1,4 +1,4 @@
-# MQTT Simulator - Data type `expression`
+# MQTT Simulator - Data type `math_expression`
 
 For `type` = `expression` we need five required configuration parameters: `MATH_EXPRESSION` , `INTERVAL_START`, `INTERVAL_END`, `MIN_DELTA` and `MAX_DELTA`. Each of these have some notes:
 
@@ -26,9 +26,6 @@ For `type` = `expression` we need five required configuration parameters: `MATH_
 
 * `MIN_DELTA` and `MAX_DELTA`:
   * It is possible to set both with the same value, in this case, it is expected that the curves are more similar between the "loops", and may be identical if `RETAIN_PROBABILITY = 0`.
-  
-* Others parameters:
-  * Although `RESET_PROBABILITY` and `INITIAL_VALUE` works, keep in mind that we do not check if it is a possible value for the `MATH_EXPRESSION`.
 
 ## Example 1 - Freezer Temperature
 

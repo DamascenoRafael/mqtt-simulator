@@ -72,30 +72,13 @@
             "DATA": [
                 {
                     "NAME": "temperature",
-                    "TYPE": "expression",
+                    "TYPE": "math_expression",
                     "RETAIN_PROBABILITY": 0.1,
                     "MATH_EXPRESSION": "2*math.pow(x,2)+1",
                     "INTERVAL_START": 0,
                     "INTERVAL_END": 5,
-                    "MIN_DELTA": 0.5,
+                    "MIN_DELTA": 0.3,
                     "MAX_DELTA": 0.5
-                }
-            ]
-        },
-        {
-            "TYPE": "single",
-            "PREFIX": "car",
-            "TIME_INTERVAL": 6,
-            "DATA": [
-                {
-                    "NAME": "velocity",
-                    "TYPE": "expression",
-                    "RETAIN_PROBABILITY": 0.5,
-                    "MATH_EXPRESSION": "(75*x)**(1/2)",
-                    "INTERVAL_START": 0,
-                    "INTERVAL_END": 100,
-                    "MIN_DELTA": 10,
-                    "MAX_DELTA": 10
                 }
             ]
         }
