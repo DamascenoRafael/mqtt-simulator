@@ -1,6 +1,6 @@
 # MQTT Simulator - Data type `math_expression`
 
-For `type` = `expression` we need five required configuration parameters: `MATH_EXPRESSION` , `INTERVAL_START`, `INTERVAL_END`, `MIN_DELTA` and `MAX_DELTA`. Each of these have some notes:
+For `type` = `math_expression` we need five required configuration parameters: `MATH_EXPRESSION`, `INTERVAL_START`, `INTERVAL_END`, `MIN_DELTA` and `MAX_DELTA`. Each of these have some notes:
 
 ```json
 
