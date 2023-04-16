@@ -131,7 +131,7 @@ python3 mqtt-simulator/main.py -f <path/settings.json>
     | `MAX_DELTA` | number | Maximum value that can be added to the  `MATH_EXPRESSION`'s variable `x` from a published data to the next | if `TYPE` is `"math_expression"` |
     
 
-    > **_NOTE:_** Access [expression.md](./expression.md) file for more explanations and a example of `TYPE = "math_expression"`.
+    > **_NOTE:_** Access [math_expression.md](./math_expression.md) file for more explanations and a example of `TYPE: "math_expression"`.
 
     
 

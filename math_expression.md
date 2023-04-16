@@ -1,12 +1,14 @@
 # MQTT Simulator - Data type `math_expression`
 
-For `type` = `math_expression` we need five required configuration parameters: `MATH_EXPRESSION`, `INTERVAL_START`, `INTERVAL_END`, `MIN_DELTA` and `MAX_DELTA`. Each of these have some notes:
+For general information on how to configure the MQTT Simulator see the [README.md](./README.md) file.
+
+For `TYPE: "math_expression"` we need five required configuration parameters: `MATH_EXPRESSION`, `INTERVAL_START`, `INTERVAL_END`, `MIN_DELTA` and `MAX_DELTA`. Each of these have some notes:
 
 ```json
 
 {
     ... 
-    "TYPE": "expression",
+    "TYPE": "math_expression",
     "MATH_EXPRESSION": "x**2",
     "INTERVAL_START": 30,
     "INTERVAL_END": 40,
@@ -17,7 +19,7 @@ For `type` = `math_expression` we need five required configuration parameters: `
 ```
 
 * `MATH_EXPRESSION`: 
-  * The  `MATH_EXPRESSION`'s variable **must** be defined as `x`. 
+  * The `MATH_EXPRESSION`'s variable **must** be defined as `x`. 
   * Any *Pythonic* expression is valid, so, for instance, if you declare it as `x**2` or `math.pow(x,2)` the generated function will be the same.
 
 * `INTERVAL_START` and `INTERVAL_END`: 
@@ -29,7 +31,7 @@ For `type` = `math_expression` we need five required configuration parameters: `
 
 ## Example 1 - Freezer Temperature
 
-In the example below the `MATH_EXPRESION `= $2x²+1$, `INTERVAL_START = 0`, `INTERVAL_END = 5`, `MIN_DELTA = 0` and `MAX_DELTA = 0.5`, so it is expected that the generated values are between 1 and 61.5, and the curves should be slightly different.
+In the example below the `MATH_EXPRESION` = $2x²+1$, `INTERVAL_START = 0`, `INTERVAL_END = 5`, `MIN_DELTA = 0` and `MAX_DELTA = 0.5`, so it is expected that the generated values are between 1 and 61.5, and the curves should be slightly different.
 
 
 ```json
@@ -40,7 +42,7 @@ In the example below the `MATH_EXPRESION `= $2x²+1$, `INTERVAL_START = 0`, `INT
     "DATA": [
         {
             "NAME": "temperature",
-            "TYPE": "expression",
+            "TYPE": "math_expression",
             "RETAIN_PROBABILITY": 0.1,
             "MATH_EXPRESSION": "2*math.pow(x,2)+1",
             "INTERVAL_START": 0,
@@ -68,7 +70,7 @@ In the example below the `MATH_EXPRESION` = $\sqrt{75x}$, `INTERVAL_START = 0`, 
     "DATA": [
         {
             "NAME": "velocity",
-            "TYPE": "expression",
+            "TYPE": "math_expression",
             "RETAIN_PROBABILITY": 0,
             "MATH_EXPRESSION": "(75*x)**(1/2)",
             "INTERVAL_START": 0,
@@ -81,10 +83,3 @@ In the example below the `MATH_EXPRESION` = $\sqrt{75x}$, `INTERVAL_START = 0`, 
 ```
 
 ![Freezer Temperature Example](images/expression-example-car.gif)
-
-
-
-## Authors
-
-[![DamascenoRafael](https://github.com/DamascenoRafael.png?size=70)](https://github.com/DamascenoRafael)
- [![Maasouza](https://github.com/Maasouza.png?size=70)](https://github.com/Maasouza)

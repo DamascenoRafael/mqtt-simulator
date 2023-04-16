@@ -40,7 +40,6 @@ class TopicAuto(Topic, threading.Thread):
         self.old_payload = None
         self.expression_evaluators = {}
 
-
     def run(self):
         self.connect()
         while True:
