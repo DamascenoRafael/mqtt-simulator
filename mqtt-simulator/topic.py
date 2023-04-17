@@ -4,6 +4,7 @@ import random
 import threading
 from abc import ABC, abstractmethod
 import paho.mqtt.client as mqtt
+from expression_evaluator import ExpressionEvaluator
 
 class Topic(ABC):
     def __init__(self, broker_url, broker_port, topic_url, topic_data):
@@ -37,6 +38,7 @@ class TopicAuto(Topic, threading.Thread):
         threading.Thread.__init__(self, args = (), kwargs = None)
         self.time_interval = time_interval
         self.old_payload = None
+        self.expression_evaluators = {}
 
     def run(self):
         self.connect()
@@ -55,7 +57,10 @@ class TopicAuto(Topic, threading.Thread):
             return random.uniform(data['MIN_VALUE'], data['MAX_VALUE'])
         elif data['TYPE'] == 'bool':
             return random.choice([True, False])
-
+        elif data['TYPE'] == 'math_expression':
+            self.expression_evaluators[data['NAME']] = ExpressionEvaluator(data['MATH_EXPRESSION'], data['INTERVAL_START'], data['INTERVAL_END'], data['MIN_DELTA'], data['MAX_DELTA'])
+            return self.expression_evaluators[data['NAME']].get_current_expression_value()
+            
     def generate_next_value(self, data, old_value):
         if 'RESET_PROBABILITY' in data and random.random() < data['RESET_PROBABILITY']:
             return self.generate_initial_value(data)
@@ -65,6 +70,8 @@ class TopicAuto(Topic, threading.Thread):
             return old_value
         if data['TYPE'] == 'bool':
             return not old_value
+        elif data['TYPE'] == 'math_expression':
+            return self.expression_evaluators[data['NAME']].evaluate_expression()
         else:
             # generating value for int or float
             step = random.uniform(0, data['MAX_STEP'])
