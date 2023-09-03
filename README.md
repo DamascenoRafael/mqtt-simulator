@@ -50,6 +50,8 @@ Optionally, you can pass a flag with the path to settings file:
 python3 mqtt-simulator/main.py -f <path/settings.json>
 ```
 
+#### Running using Docker
+
 Additionally, you can run via [Docker](https://docs.docker.com/get-docker/) with the included `Dockerfile`.
 
 Build the image:
