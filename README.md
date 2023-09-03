@@ -50,6 +50,20 @@ Optionally, you can pass a flag with the path to settings file:
 python3 mqtt-simulator/main.py -f <path/settings.json>
 ```
 
+Additionally, you can run via [Docker](https://docs.docker.com/get-docker/) with the included `Dockerfile`.
+
+Build the image:
+
+```shell
+docker build -t mqtt-simulator .
+```
+
+Run the container:
+
+```shell
+docker run mqtt-simulator -f <path/settings.json>
+```
+
 ## Configuration
 
 * The `config/settings.json` file has three main configuration parameters:
