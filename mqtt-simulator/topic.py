@@ -7,15 +7,18 @@ import paho.mqtt.client as mqtt
 from expression_evaluator import ExpressionEvaluator
 
 class Topic(ABC):
-    def __init__(self, broker_url, broker_port, topic_url, topic_data):
+    def __init__(self, broker_url, broker_port, topic_url, topic_data, protocol, clean_session):
         self.broker_url = broker_url
         self.broker_port = broker_port
         self.topic_url = topic_url
         self.topic_data = topic_data
         self.client = None
+        self.protocol = protocol
+        self.clean_session = clean_session
 
     def connect(self):
         self.client = mqtt.Client(self.topic_url, clean_session=True, transport='tcp')
+        self.client = mqtt.Client(self.topic_url, protocol=self.protocol, clean_session=self.clean_session)
         self.client.on_publish = self.on_publish
         self.client.connect(self.broker_url, self.broker_port) 
         self.client.loop_start()
@@ -33,19 +36,21 @@ class Topic(ABC):
 
 
 class TopicAuto(Topic, threading.Thread):
-    def __init__(self, broker_url, broker_port, topic_url, topic_data, time_interval):
-        Topic.__init__(self, broker_url, broker_port, topic_url, topic_data)
+    def __init__(self, broker_url, broker_port, topic_url, topic_data, protocol, clean_session, time_interval, qos, retain):
+        Topic.__init__(self, broker_url, broker_port, topic_url, topic_data, protocol, clean_session)
         threading.Thread.__init__(self, args = (), kwargs = None)
         self.time_interval = time_interval
         self.old_payload = None
         self.expression_evaluators = {}
+        self.qos = qos or 2
+        self.retain = retain or False
 
     def run(self):
         self.connect()
         while True:
             payload = self.generate_payload()
             self.old_payload = payload
-            self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=2, retain=False) 
+            self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=self.qos, retain=self.retain) 
             time.sleep(self.time_interval)
 
     def generate_initial_value(self, data):
@@ -60,24 +65,45 @@ class TopicAuto(Topic, threading.Thread):
         elif data['TYPE'] == 'math_expression':
             self.expression_evaluators[data['NAME']] = ExpressionEvaluator(data['MATH_EXPRESSION'], data['INTERVAL_START'], data['INTERVAL_END'], data['MIN_DELTA'], data['MAX_DELTA'])
             return self.expression_evaluators[data['NAME']].get_current_expression_value()
+        elif data['TYPE'] == 'raw_values':
+            index = data.get('MIN_INDEX', 0)
+            values = data.get('VALUES', [])
+            if len(values) > index:
+                return { "index": index, "value": values[0] }
+            else:
+                return { "index": index }
             
     def generate_next_value(self, data, old_value):
-        if 'RESET_PROBABILITY' in data and random.random() < data['RESET_PROBABILITY']:
+        randN = random.random()
+        if randN < data.get('RESET_PROBABILITY', 0):
             return self.generate_initial_value(data)
-        if 'RESTART_ON_BOUNDARIES' in data and data['RESTART_ON_BOUNDARIES'] and (old_value == data['MIN_VALUE'] or old_value == data['MAX_VALUE']):
+        if data.get('RESTART_ON_BOUNDARIES', False) and (old_value == data.get('MIN_VALUE', 0) or old_value == data.get('MAX_VALUE', 100)):
             return self.generate_initial_value(data)
-        if random.random() < data['RETAIN_PROBABILITY']:
+        if randN < data.get('RETAIN_PROBABILITY', 0):
             return old_value
         if data['TYPE'] == 'bool':
             return not old_value
         elif data['TYPE'] == 'math_expression':
             return self.expression_evaluators[data['NAME']].evaluate_expression()
+        elif data['TYPE'] == 'raw_values':
+            values = data.get('VALUES', [])
+            minIndex = data.get('MIN_INDEX', 0)
+            maxIndex = data.get('MAX_INDEX', len(values) - 1)
+            if maxIndex >= len(values):
+                maxIndex = len(values) - 1
+            index = old_value.get('index', minIndex) + 1
+            if data.get('RESTART_ON_BOUNDARIES', False) and (index < minIndex or index > maxIndex):
+                return self.generate_initial_value(data)
+            elif len(values) > index:
+                return { "index": index, "value": values[index] }
+            else:
+                return old_value
         else:
             # generating value for int or float
             step = random.uniform(0, data['MAX_STEP'])
             step = round(step) if data['TYPE'] == 'int' else step
             increase_probability = data['INCREASE_PROBABILITY'] if 'INCREASE_PROBABILITY' in data else 0.5
-            if random.random() < (1 - increase_probability):
+            if randN < (1 - increase_probability):
                 step *= -1
             return max(old_value + step, data['MIN_VALUE']) if step < 0 else min(old_value + step, data['MAX_VALUE'])
 
