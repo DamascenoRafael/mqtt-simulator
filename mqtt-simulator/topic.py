@@ -16,6 +16,7 @@ class Topic(ABC):
         self.client = None
         self.protocol = protocol
         self.clean_session = clean_session
+        self.raw_values_index = 0
 
     def connect(self):
         if self.protocol == mqtt.MQTTv5:
@@ -54,7 +55,7 @@ class TopicAuto(Topic, threading.Thread):
         while self.loop:
             payload = self.generate_payload()
             self.old_payload = payload
-            self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=self.qos, retain=self.retain) 
+            self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=self.qos, retain=self.retain)
             time.sleep(self.time_interval)
 
     def generate_initial_value(self, data):
@@ -70,15 +71,15 @@ class TopicAuto(Topic, threading.Thread):
             self.expression_evaluators[data['NAME']] = ExpressionEvaluator(data['MATH_EXPRESSION'], data['INTERVAL_START'], data['INTERVAL_END'], data['MIN_DELTA'], data['MAX_DELTA'])
             return self.expression_evaluators[data['NAME']].get_current_expression_value()
         elif data['TYPE'] == 'raw_values':
-            index = data.get('INDEX_START', 0)
+            self.raw_values_index = data.get('INDEX_START', 0)
             values = data['VALUES']
-            return { "index": index, "value": values[index] }
+            return values[self.raw_values_index]
             
     def generate_next_value(self, data, old_value):
         randN = random.random()
         if randN < data.get('RESET_PROBABILITY', 0):
             return self.generate_initial_value(data)
-        if data.get('RESTART_ON_BOUNDARIES', False) and (old_value == data['MIN_VALUE'] or old_value == data['MAX_VALUE']):
+        if data.get('RESTART_ON_BOUNDARIES', False) and (old_value == data.get('MIN_VALUE') or old_value == data.get('MAX_VALUE')):
             return self.generate_initial_value(data)
         if randN < data.get('RETAIN_PROBABILITY', 0):
             return old_value
@@ -87,16 +88,19 @@ class TopicAuto(Topic, threading.Thread):
         elif data['TYPE'] == 'math_expression':
             return self.expression_evaluators[data['NAME']].evaluate_expression()
         elif data['TYPE'] == 'raw_values':
-            values = data.get('VALUES', [])
+            values = data['VALUES']
+            # get boundaries or default to data length
             startIndex = data.get('INDEX_START', 0)
             endIndex = data.get('INDEX_END', len(values) - 1)
             if endIndex >= len(values):
                 endIndex = len(values) - 1
-            index = old_value.get('index', startIndex) + 1
+            # iterate then restart, return next, or disconnect on end of data
+            index = self.raw_values_index + 1
             if data.get('RESTART_ON_BOUNDARIES', False) and (index < startIndex or index > endIndex):
                 return self.generate_initial_value(data)
-            elif len(values) > index:
-                return { "index": index, "value": values[index] }
+            elif index <= endIndex:
+                self.raw_values_index = index
+                return values[index]
             else:
                 self.disconnect()
         else:
