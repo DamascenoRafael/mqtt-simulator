@@ -16,7 +16,6 @@ class Topic(ABC):
         self.client = None
         self.protocol = protocol
         self.clean_session = clean_session
-        self.raw_values_index = 0
 
     def connect(self):
         if self.protocol == mqtt.MQTTv5:
@@ -49,6 +48,7 @@ class TopicAuto(Topic, threading.Thread):
         self.expression_evaluators = {}
         self.qos = qos
         self.retain = retain
+        self.raw_values_index = 0
 
     def run(self):
         self.connect()
@@ -88,19 +88,15 @@ class TopicAuto(Topic, threading.Thread):
         elif data['TYPE'] == 'math_expression':
             return self.expression_evaluators[data['NAME']].evaluate_expression()
         elif data['TYPE'] == 'raw_values':
+            # iterate the raw_values then restart, return next, or disconnect at the end_index
             values = data['VALUES']
-            # get boundaries or default to data length
-            startIndex = data.get('INDEX_START', 0)
-            endIndex = data.get('INDEX_END', len(values) - 1)
-            if endIndex >= len(values):
-                endIndex = len(values) - 1
-            # iterate then restart, return next, or disconnect on end of data
-            index = self.raw_values_index + 1
-            if data.get('RESTART_ON_BOUNDARIES', False) and (index < startIndex or index > endIndex):
+            end_index = data.get('INDEX_END', len(values) - 1)
+            self.raw_values_index =+ 1
+            if data.get('RESTART_ON_BOUNDARIES', False) and self.raw_values_index > end_index:
                 return self.generate_initial_value(data)
-            elif index <= endIndex:
-                self.raw_values_index = index
-                return values[index]
+            elif self.raw_values_index <= end_index:
+                self.raw_values_index = self.raw_values_index
+                return values[self.raw_values_index]
             else:
                 self.disconnect()
         else:
