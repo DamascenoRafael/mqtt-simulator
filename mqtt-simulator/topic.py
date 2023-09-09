@@ -92,10 +92,9 @@ class TopicAuto(Topic, threading.Thread):
             values = data['VALUES']
             end_index = data.get('INDEX_END', len(values) - 1)
             self.raw_values_index =+ 1
-            if data.get('RESTART_ON_BOUNDARIES', False) and self.raw_values_index > end_index:
+            if data.get('RESTART_ON_END', False) and self.raw_values_index > end_index:
                 return self.generate_initial_value(data)
             elif self.raw_values_index <= end_index:
-                self.raw_values_index = self.raw_values_index
                 return values[self.raw_values_index]
             else:
                 self.disconnect()
