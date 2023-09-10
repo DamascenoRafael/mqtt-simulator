@@ -81,6 +81,36 @@
                     "MAX_DELTA": 0.5
                 }
             ]
+        },
+        {
+            "TYPE": "single",
+            "PREFIX": "location",
+            "TIME_INTERVAL": 5,
+            "DATA": [
+                {
+                    "NAME": "coordinate",
+                    "TYPE": "raw_values",
+                    "RESTART_ON_END": true,
+                    "VALUES": [
+                        {
+                            "lat": -121.883682,
+                            "long": 37.354635
+                        },
+                        {
+                            "lat": -121.883352,
+                            "long": 37.354192
+                        },
+                        {
+                            "lat": -121.884284,
+                            "long": 37.353757
+                        },
+                        {
+                            "lat": -121.885227,
+                            "long": 37.353324
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
