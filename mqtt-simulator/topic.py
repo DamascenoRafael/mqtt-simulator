@@ -91,7 +91,7 @@ class TopicAuto(Topic, threading.Thread):
             # iterate the raw_values then restart, return next, or disconnect at the end_index
             values = data['VALUES']
             end_index = data.get('INDEX_END', len(values) - 1)
-            self.raw_values_index =+ 1
+            self.raw_values_index += 1
             if data.get('RESTART_ON_END', False) and self.raw_values_index > end_index:
                 return self.generate_initial_value(data)
             elif self.raw_values_index <= end_index:
