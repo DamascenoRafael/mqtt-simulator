@@ -17,13 +17,13 @@ class Simulator:
             broker_protocol = config.get('PROTOCOL_VERSION', 4) # mqtt.MQTTv311
             broker_clean = config.get('CLEAN_SESSION', True)
             broker_qos = config.get('QOS', 2)
-            broker_retained = config.get('RETAIN', False)
+            broker_retain = config.get('RETAIN', False)
             # read each configured topic
             for topic in config['TOPICS']:
                 topic_data = topic['DATA']
                 topic_time_interval = topic.get('TIME_INTERVAL', broker_time_interval)
                 topic_qos = topic.get('QOS', broker_qos)
-                topic_retained = topic.get('RETAIN', broker_retained)
+                topic_retain = topic.get('RETAIN', broker_retain)
                 if topic['TYPE'] == 'single':
                     # create single topic with format: /{PREFIX}
                     topic_url = topic['PREFIX']
