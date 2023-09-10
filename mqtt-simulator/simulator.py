@@ -27,17 +27,17 @@ class Simulator:
                 if topic['TYPE'] == 'single':
                     # create single topic with format: /{PREFIX}
                     topic_url = topic['PREFIX']
-                    self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retained))
+                    self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retain))
                 elif topic['TYPE'] == 'multiple':
                     # create multiple topics with format: /{PREFIX}/{id}
                     for id in range(topic['RANGE_START'], topic['RANGE_END']+1):
                         topic_url = topic['PREFIX'] + '/' + str(id)
-                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retained))
+                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retain))
                 elif topic['TYPE'] == 'list':
                     # create multiple topics with format: /{PREFIX}/{item}
                     for item in topic['LIST']:
                         topic_url = topic['PREFIX'] + '/' + str(item)
-                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retained))
+                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retain))
                     
 
     def run(self):
