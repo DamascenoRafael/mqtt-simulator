@@ -84,7 +84,7 @@ docker run mqtt-simulator -f <path/settings.json>
     | --- | --- | --- | --- |
     | `BROKER_URL` | string | localhost | The broker URL where the data will be published |
     | `BROKER_PORT` | number | 1883 | The port used by the broker |
-    | `PROTOCOL_VERSION` | number | 4 | Sets the [paho.mqtt.client] `protocol` param which is the version of the MQTT protocol to use for this client. Can be either (3):MQTTv31, (4):MQTTv311 or (5):MQTTv5 |
+    | `PROTOCOL_VERSION` | number | 4 | Sets the [paho.mqtt.client] `protocol` param which is the version of the MQTT protocol to use for this client. Can be either `3` (MQTTv31), `4` (MQTTv311) or `5` (MQTTv5) |
     | `CLEAN_SESSION` | bool | True | Sets the [paho.mqtt.client] `clean_session` param which is a boolean that determines the client type |
     | `QOS` | number | 2 | Sets the [paho.mqtt.publish] `qos` param which is the quality of service level to use |
     | `RETAIN` | bool | False | Sets the [paho.mqtt.publish] `retain` param which sets the “last known good”/retained message for the topic. |
