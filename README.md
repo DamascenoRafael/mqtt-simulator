@@ -116,6 +116,7 @@ docker run mqtt-simulator -f <path/settings.json>
     | `LIST` | array\<any> | When the `TYPE` is `"list"` the topic prefix will be concatenated with `/<item>` for each item in the array | if `TYPE` is `"list"` |
     | `RANGE_START` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_START` will be the first number  | if `TYPE` is `"multiple"`  |
     | `RANGE_END` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_END` will be the last number | if `TYPE` is `"multiple"`  |
+    | `CLEAN_SESSION` | bool | Overwrites the broker level config value and applies only to this Topic | no |
     | `RETAIN` | bool | Overwrites the broker level config value and applies only to this Topic | no |
     | `QOS` | number | Overwrites the broker level config value and applies only to this Topic | no |
     | `TIME_INTERVAL` | number |  Overwrites the broker level config value and applies only to this Topic | no |

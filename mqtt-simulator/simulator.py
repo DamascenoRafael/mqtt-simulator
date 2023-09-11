@@ -1,44 +1,51 @@
 import json
+from client_settings import ClientSettings
 from topic import TopicAuto
 
 class Simulator:
     def __init__(self, settings_file):
-        self.broker_url = None
-        self.broker_port = None
         self.topics = []
-        self.load_settings(settings_file)
+        self.default_client_settings = ClientSettings(
+            clean=True,
+            retain=False,
+            qos=2,
+            time_interval=10
+        )
+        self.load_topics(settings_file)
 
-    def load_settings(self, settings_file):
+    def read_client_settings(self, settings_dict: dict, default: ClientSettings):
+        return ClientSettings(
+            clean=settings_dict.get('CLEAN_SESSION', default.clean),
+            retain=settings_dict.get('RETAIN', default.retain),
+            qos=settings_dict.get('QOS', default.qos),
+            time_interval= settings_dict.get('TIME_INTERVAL', default.time_interval)
+        )
+
+    def load_topics(self, settings_file):
         with open(settings_file) as json_file:
             config = json.load(json_file)
-            self.broker_url = config.get('BROKER_URL', 'localhost')
-            self.broker_port = config.get('BROKER_PORT', 1883)
-            broker_time_interval = config.get('TIME_INTERVAL', 10)
+            broker_url = config.get('BROKER_URL', 'localhost')
+            broker_port = config.get('BROKER_PORT', 1883)
             broker_protocol = config.get('PROTOCOL_VERSION', 4) # mqtt.MQTTv311
-            broker_clean = config.get('CLEAN_SESSION', True)
-            broker_qos = config.get('QOS', 2)
-            broker_retain = config.get('RETAIN', False)
+            broker_client_settings = self.read_client_settings(config, default=self.default_client_settings)
             # read each configured topic
             for topic in config['TOPICS']:
                 topic_data = topic['DATA']
-                topic_time_interval = topic.get('TIME_INTERVAL', broker_time_interval)
-                topic_qos = topic.get('QOS', broker_qos)
-                topic_retain = topic.get('RETAIN', broker_retain)
+                topic_client_settings = self.read_client_settings(topic, default=broker_client_settings)
                 if topic['TYPE'] == 'single':
                     # create single topic with format: /{PREFIX}
                     topic_url = topic['PREFIX']
-                    self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retain))
+                    self.topics.append(TopicAuto(broker_url, broker_port, broker_protocol, topic_url, topic_data, topic_client_settings))
                 elif topic['TYPE'] == 'multiple':
                     # create multiple topics with format: /{PREFIX}/{id}
                     for id in range(topic['RANGE_START'], topic['RANGE_END']+1):
                         topic_url = topic['PREFIX'] + '/' + str(id)
-                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retain))
+                        self.topics.append(TopicAuto(broker_url, broker_port, broker_protocol, topic_url, topic_data, topic_client_settings))
                 elif topic['TYPE'] == 'list':
                     # create multiple topics with format: /{PREFIX}/{item}
                     for item in topic['LIST']:
                         topic_url = topic['PREFIX'] + '/' + str(item)
-                        self.topics.append(TopicAuto(self.broker_url, self.broker_port, topic_url, topic_data, broker_protocol, broker_clean, topic_time_interval, topic_qos, topic_retain))
-                    
+                        self.topics.append(TopicAuto(broker_url, broker_port, broker_protocol, topic_url, topic_data, topic_client_settings))
 
     def run(self):
         for topic in self.topics:
