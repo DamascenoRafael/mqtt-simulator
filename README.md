@@ -85,8 +85,8 @@ docker run mqtt-simulator -f <path/settings.json>
     | `BROKER_URL` | string | localhost | The broker URL where the data will be published |
     | `BROKER_PORT` | number | 1883 | The port used by the broker |
     | `PROTOCOL_VERSION` | number | 4 | Sets the [paho.mqtt.client] `protocol` param which is the version of the MQTT protocol to use for this client. Can be either `3` (MQTTv31), `4` (MQTTv311) or `5` (MQTTv5) |
-    | `CLEAN_SESSION` | bool | True | Sets the [paho.mqtt.client] `clean_session` param which is a boolean that determines the client type |
-    | `RETAIN` | bool | False | Sets the [paho.mqtt.publish] `retain` param which sets the “last known good”/retained message for the topic. |
+    | `CLEAN_SESSION` | bool | True | Sets the [paho.mqtt.client] `clean_session` param which is a boolean that determines the client type. This property is ignored if `PROTOCOL_VERSION` is `5`. |
+    | `RETAIN` | bool | False | Sets the [paho.mqtt.publish] `retain` param which sets the “last known good”/retained message for the topic |
     | `QOS` | number | 2 | Sets the [paho.mqtt.publish] `qos` param which is the quality of service level to use |
     | `TIME_INTERVAL` | number | 10 | Time interval in seconds between submissions towards the topic |
     | `TOPICS` | array\<Objects> | None | Specification of topics and how they will be published |
@@ -116,9 +116,9 @@ docker run mqtt-simulator -f <path/settings.json>
     | `LIST` | array\<any> | When the `TYPE` is `"list"` the topic prefix will be concatenated with `/<item>` for each item in the array | if `TYPE` is `"list"` |
     | `RANGE_START` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_START` will be the first number  | if `TYPE` is `"multiple"`  |
     | `RANGE_END` | number | When the `TYPE` is `"multiple"` the topic prefix will be concatenated with `/<id>` where `RANGE_END` will be the last number | if `TYPE` is `"multiple"`  |
-    | `TIME_INTERVAL` | number |  Overwrites the broker level config value and applies only to this Topic | no |
     | `RETAIN` | bool | Overwrites the broker level config value and applies only to this Topic | no |
     | `QOS` | number | Overwrites the broker level config value and applies only to this Topic | no |
+    | `TIME_INTERVAL` | number |  Overwrites the broker level config value and applies only to this Topic | no |
     | `DATA` | array\<Objects> | Specification of the data that will form the JSON to be sent in the topic | yes |
 
 * The key **DATA** inside TOPICS has a array of objects where each one has the format:
