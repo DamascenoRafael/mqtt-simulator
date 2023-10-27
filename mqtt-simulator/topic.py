@@ -60,10 +60,12 @@ class Topic(ABC):
         if self.old_payload == None:
             # generate initial data
             for data in self.topic_data:
+                payload.update(data.get('PAYLOAD_ROOT', {}))
                 payload[data['NAME']] = self.generate_initial_value(data)
         else:
             # generate next data
             for data in self.topic_data:
+                payload.update(data.get('PAYLOAD_ROOT', {}))
                 payload[data['NAME']] = self.generate_next_value(data, self.old_payload[data['NAME']])
         return payload
 
@@ -93,8 +95,10 @@ class TopicAuto(Topic, threading.Thread):
             return self.expression_evaluators[data['NAME']].get_current_expression_value()
         elif data['TYPE'] == 'raw_values':
             self.raw_values_index = data.get('INDEX_START', 0)
-            values = data['VALUES']
-            return values[self.raw_values_index]
+            value = {}
+            value.update(data.get('VALUE_DEFAULT', {}))
+            value.update(data['VALUES'][self.raw_values_index])
+            return value
             
     def generate_next_value(self, data, old_value):
         randN = random.random()
@@ -110,13 +114,15 @@ class TopicAuto(Topic, threading.Thread):
             return self.expression_evaluators[data['NAME']].evaluate_expression()
         elif data['TYPE'] == 'raw_values':
             # iterate the raw_values then restart, return next, or disconnect at the end_index
-            values = data['VALUES']
-            end_index = data.get('INDEX_END', len(values) - 1)
+            end_index = data.get('INDEX_END', len(data['VALUES']) - 1)
             self.raw_values_index += 1
             if data.get('RESTART_ON_END', False) and self.raw_values_index > end_index:
                 return self.generate_initial_value(data)
             elif self.raw_values_index <= end_index:
-                return values[self.raw_values_index]
+                value = {}
+                value.update(data.get('VALUE_DEFAULT', {}))
+                value.update(data['VALUES'][self.raw_values_index])
+                return value
             else:
                 self.disconnect()
         else:
