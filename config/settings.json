@@ -90,6 +90,12 @@
                 {
                     "NAME": "coordinate",
                     "TYPE": "raw_values",
+                    "PAYLOAD_ROOT": {
+                      "all": "messages"
+                    },
+                    "VALUE_DEFAULT": {
+                      "key": "loc_default"
+                    },
                     "RESTART_ON_END": true,
                     "VALUES": [
                         {
@@ -97,14 +103,17 @@
                             "long": 37.354635
                         },
                         {
+                            "key": "loc_a",
                             "lat": -121.883352,
                             "long": 37.354192
                         },
                         {
+                            "key": "loc_b",
                             "lat": -121.884284,
                             "long": 37.353757
                         },
                         {
+                            "key": "loc_c",
                             "lat": -121.885227,
                             "long": 37.353324
                         }
