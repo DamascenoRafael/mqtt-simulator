@@ -142,7 +142,7 @@ docker run mqtt-simulator -f <path/settings.json>
     | Key | Type | Description | Required |
     | --- | --- | --- | --- |
     | `NAME` | string | JSON property name to be sent | yes |
-    | `TYPE` | string | It can be `"int"`, `"float"`, `"bool"`, `"math_expression"`, or `"raw_value"` | yes |
+    | `TYPE` | string | It can be `"int"`, `"float"`, `"bool"`, `"math_expression"`, or `"raw_values"` | yes |
     | `INITIAL_VALUE` | number or bool (same as defined in `TYPE`) | Initial value that the property will assume when the simulation starts (random otherwise) | optional. Only valid if `TYPE` is different from `"math_expression"` |
     | `MIN_VALUE` | number | Minimum value that the property can assume | if `TYPE` is `"int"` or `"float"` |
     | `MAX_VALUE` | number | Maximum value that the property can assume | if `TYPE` is `"int"` or `"float"`  |
@@ -156,11 +156,11 @@ docker run mqtt-simulator -f <path/settings.json>
     | `INTERVAL_END` | number | Maximum value that the `MATH_EXPRESSION`'s variable `x` can assume | if `TYPE` is `"math_expression"` |
     | `MIN_DELTA` | number | Minimum value that can be added to the  `MATH_EXPRESSION`'s variable `x` from a published data to the next | if `TYPE` is `"math_expression"` |
     | `MAX_DELTA` | number | Maximum value that can be added to the  `MATH_EXPRESSION`'s variable `x` from a published data to the next | if `TYPE` is `"math_expression"` |
-    | `INDEX_START` | number | The index to start publishing from the `VALUES` array | optional, default is `0`. Only valid if `TYPE` is `"raw_value"` |
-    | `INDEX_END` | number | The index to end publishing from the `VALUES` array | optional, default is `len(values) - 1`. Only valid if `TYPE` is `"raw_value"` |
-    | `RESTART_ON_END` | bool | When true and the index of the `VALUES` array reaches `INDEX_END` the next value will be the `INDEX_START`. Otherwise the client will `disconnect` when reaching the end | optional, default is false. Only valid if `TYPE` is `"raw_value"` |
-    | `VALUES` | array\<any> | The values to be published in array order | if `TYPE` is `"raw_value"` |
-    | `VALUE_DEFAULT` | object\<any> | The default value params used or overwritten by a `"raw_value" | if `TYPE` is `"raw_value"` |
+    | `INDEX_START` | number | The index to start publishing from the `VALUES` array | optional, default is `0`. Only valid if `TYPE` is `"raw_values"` |
+    | `INDEX_END` | number | The index to end publishing from the `VALUES` array | optional, default is `len(values) - 1`. Only valid if `TYPE` is `"raw_values"` |
+    | `RESTART_ON_END` | bool | When true and the index of the `VALUES` array reaches `INDEX_END` the next value will be the `INDEX_START`. Otherwise the client will `disconnect` when reaching the end | optional, default is false. Only valid if `TYPE` is `"raw_values"` |
+    | `VALUES` | array\<any> | The values to be published in array order | if `TYPE` is `"raw_values"` |
+    | `VALUE_DEFAULT` | object\<any> | The default value params used or overwritten by a `"raw_values"` | if `TYPE` is `"raw_values"` |
     | `PAYLOAD_ROOT` | object\<any> | The root set of params to include on all messages | no |
 
     > **_NOTE:_** Access [math_expression.md](./math_expression.md) file for more explanations and a example of `TYPE: "math_expression"`.
