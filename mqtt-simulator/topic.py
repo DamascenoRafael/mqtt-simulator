@@ -8,8 +8,10 @@ from data_classes.broker_settings import BrokerSettings
 from data_classes.client_settings import ClientSettings
 from expression_evaluator import ExpressionEvaluator
 
-class Topic(ABC):
+class Topic(ABC, threading.Thread):
     def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
+        threading.Thread.__init__(self, args = (), kwargs = None)
+
         self.broker_settings = broker_settings
 
         self.topic_url = topic_url
@@ -69,10 +71,9 @@ class Topic(ABC):
         return payload
 
 
-class TopicAuto(Topic, threading.Thread):
+class TopicAuto(Topic):
     def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
         Topic.__init__(self, broker_settings, topic_url, topic_data, topic_client_settings)
-        threading.Thread.__init__(self, args = (), kwargs = None)
 
         # Relevant for when TYPE is 'math_expression'
         self.expression_evaluators = {}
