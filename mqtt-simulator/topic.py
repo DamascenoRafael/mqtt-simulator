@@ -4,14 +4,13 @@ import random
 import threading
 from abc import ABC, abstractmethod
 import paho.mqtt.client as mqtt
-from client_settings import ClientSettings
+from data_classes.broker_settings import BrokerSettings
+from data_classes.client_settings import ClientSettings
 from expression_evaluator import ExpressionEvaluator
 
 class Topic(ABC):
-    def __init__(self, broker_url: str, broker_port: int, broker_protocol: int, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
-        self.broker_url = broker_url
-        self.broker_port = broker_port
-        self.broker_protocol = broker_protocol
+    def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
+        self.broker_settings = broker_settings
 
         self.topic_url = topic_url
         self.topic_data = topic_data
@@ -31,12 +30,12 @@ class Topic(ABC):
 
     def connect(self):
         self.loop = True
-        if self.broker_protocol == mqtt.MQTTv5:
-            self.client = mqtt.Client(self.topic_url, protocol=self.broker_protocol)
+        if self.broker_settings.protocol == mqtt.MQTTv5:
+            self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol)
         else:
-            self.client = mqtt.Client(self.topic_url, protocol=self.broker_protocol, clean_session=self.topic_client_settings.clean)
+            self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol, clean_session=self.topic_client_settings.clean)
         self.client.on_publish = self.on_publish
-        self.client.connect(self.broker_url, self.broker_port)
+        self.client.connect(self.broker_settings.url, self.broker_settings.port)
         self.client.loop_start()
 
     def disconnect(self):
@@ -71,8 +70,8 @@ class Topic(ABC):
 
 
 class TopicAuto(Topic, threading.Thread):
-    def __init__(self, broker_url: str, broker_port: int, broker_protocol: int, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
-        Topic.__init__(self, broker_url, broker_port, broker_protocol, topic_url, topic_data, topic_client_settings)
+    def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
+        Topic.__init__(self, broker_settings, topic_url, topic_data, topic_client_settings)
         threading.Thread.__init__(self, args = (), kwargs = None)
 
         # Relevant for when TYPE is 'math_expression'

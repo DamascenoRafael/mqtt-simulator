@@ -1,5 +1,6 @@
 import json
-from client_settings import ClientSettings
+from data_classes.broker_settings import BrokerSettings
+from data_classes.client_settings import ClientSettings
 from topic import TopicAuto
 
 class Simulator:
@@ -24,9 +25,11 @@ class Simulator:
     def load_topics(self, settings_file):
         with open(settings_file) as json_file:
             config = json.load(json_file)
-            broker_url = config.get('BROKER_URL', 'localhost')
-            broker_port = config.get('BROKER_PORT', 1883)
-            broker_protocol = config.get('PROTOCOL_VERSION', 4) # mqtt.MQTTv311
+            broker_settings = BrokerSettings(
+                url=config.get('BROKER_URL', 'localhost'),
+                port=config.get('BROKER_PORT', 1883),
+                protocol=config.get('PROTOCOL_VERSION', 4) # mqtt.MQTTv311
+            )
             broker_client_settings = self.read_client_settings(config, default=self.default_client_settings)
             # read each configured topic
             for topic in config['TOPICS']:
@@ -35,17 +38,17 @@ class Simulator:
                 if topic['TYPE'] == 'single':
                     # create single topic with format: /{PREFIX}
                     topic_url = topic['PREFIX']
-                    self.topics.append(TopicAuto(broker_url, broker_port, broker_protocol, topic_url, topic_data, topic_client_settings))
+                    self.topics.append(TopicAuto(broker_settings, topic_url, topic_data, topic_client_settings))
                 elif topic['TYPE'] == 'multiple':
                     # create multiple topics with format: /{PREFIX}/{id}
                     for id in range(topic['RANGE_START'], topic['RANGE_END']+1):
                         topic_url = topic['PREFIX'] + '/' + str(id)
-                        self.topics.append(TopicAuto(broker_url, broker_port, broker_protocol, topic_url, topic_data, topic_client_settings))
+                        self.topics.append(TopicAuto(broker_settings, topic_url, topic_data, topic_client_settings))
                 elif topic['TYPE'] == 'list':
                     # create multiple topics with format: /{PREFIX}/{item}
                     for item in topic['LIST']:
                         topic_url = topic['PREFIX'] + '/' + str(item)
-                        self.topics.append(TopicAuto(broker_url, broker_port, broker_protocol, topic_url, topic_data, topic_client_settings))
+                        self.topics.append(TopicAuto(broker_settings, topic_url, topic_data, topic_client_settings))
 
     def run(self):
         for topic in self.topics:
