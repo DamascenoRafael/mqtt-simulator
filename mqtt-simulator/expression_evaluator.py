@@ -1,7 +1,6 @@
 import math
 import random
 
-
 class ExpressionEvaluator():
     def __init__(self, math_expression, interval_start, interval_end, min_delta, max_delta):
         self._math_expression = self.generate_compiled_expression(math_expression)
