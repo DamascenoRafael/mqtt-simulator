@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 import paho.mqtt.client as mqtt
 from data_classes import BrokerSettings, ClientSettings
 from expression_evaluator import ExpressionEvaluator
+from utils import shouldRunWithProbability
 
 class Topic(ABC, threading.Thread):
     def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
@@ -100,12 +101,11 @@ class TopicAuto(Topic):
             return value
             
     def generate_next_value(self, data, old_value):
-        randN = random.random()
-        if randN < data.get('RESET_PROBABILITY', 0):
+        if shouldRunWithProbability(data.get('RESET_PROBABILITY', 0)):
             return self.generate_initial_value(data)
         if data.get('RESTART_ON_BOUNDARIES', False) and (old_value == data.get('MIN_VALUE') or old_value == data.get('MAX_VALUE')):
             return self.generate_initial_value(data)
-        if randN < data.get('RETAIN_PROBABILITY', 0):
+        if shouldRunWithProbability(data.get('RETAIN_PROBABILITY', 0)):
             return old_value
         if data['TYPE'] == 'bool':
             return not old_value
@@ -129,6 +129,6 @@ class TopicAuto(Topic):
             step = random.uniform(0, data['MAX_STEP'])
             step = round(step) if data['TYPE'] == 'int' else step
             increase_probability = data['INCREASE_PROBABILITY'] if 'INCREASE_PROBABILITY' in data else 0.5
-            if randN < (1 - increase_probability):
+            if shouldRunWithProbability(1 - increase_probability):
                 step *= -1
             return max(old_value + step, data['MIN_VALUE']) if step < 0 else min(old_value + step, data['MAX_VALUE'])
