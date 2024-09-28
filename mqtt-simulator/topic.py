@@ -39,10 +39,8 @@ class Topic(threading.Thread):
 
     def connect(self):
         self.loop = True
-        if self.broker_settings.protocol == mqtt.MQTTv5:
-            self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol)
-        else:
-            self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol, clean_session=self.client_settings.clean)
+        clean_session = None if self.broker_settings.protocol == mqtt.MQTTv5 else self.client_settings.clean
+        self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol, clean_session=clean_session)
         self.client.on_publish = self.on_publish
         self.client.connect(self.broker_settings.url, self.broker_settings.port)
         self.client.loop_start()
