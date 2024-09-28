@@ -161,7 +161,7 @@ docker run mqtt-simulator -f <path/settings.json>
     | `INDEX_END` | number | The index to end publishing from the `VALUES` array | optional, default is `len(values) - 1`. Only valid if `TYPE` is `"raw_values"` |
     | `RESTART_ON_END` | bool | When true and the index of the `VALUES` array reaches `INDEX_END` the next value will be the `INDEX_START`. Otherwise the client will `disconnect` when reaching the end | optional, default is false. Only valid if `TYPE` is `"raw_values"` |
     | `VALUES` | array\<any> | The values to be published in array order | if `TYPE` is `"raw_values"` |
-    | `VALUE_DEFAULT` | object | The default value params used or overwritten by params in `VALUES` | optional, default is `{}`. Only valid if `TYPE` is `"raw_values"` |
+    | `VALUE_DEFAULT` | object | The default value params used or overwritten by params in `VALUES` | optional, default is `{}`. Only valid if `TYPE` is `"raw_values"` and `VALUES` is an array\<object> |
 
     > **_NOTE:_** Access [math_expression.md](./math_expression.md) file for more explanations and a example of `TYPE: "math_expression"`.
 

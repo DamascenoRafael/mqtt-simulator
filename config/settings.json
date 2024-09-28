@@ -91,6 +91,15 @@
             },
             "DATA": [
                 {
+                    "NAME": "position",
+                    "TYPE": "raw_values",
+                    "RESTART_ON_END": true,
+                    "VALUES": [
+                        "moving",
+                        "stopped"
+                    ]
+                },
+                {
                     "NAME": "coordinate",
                     "TYPE": "raw_values",
                     "VALUE_DEFAULT": {
