@@ -9,17 +9,17 @@ class ExpressionEvaluator():
         self._min_delta = min_delta
         self._max_delta = max_delta
         self._x = interval_start
+
+    def get_current_expression_value(self):
+        return self._math_expression(self._x)
     
-    def evaluate_expression(self):
+    def get_next_expression_value(self):
         if self._x > self._interval_end:
             self._x = self._interval_start
             return self.get_current_expression_value()
         step = random.uniform(self._min_delta, self._max_delta) 
         self._x += step
         return self.get_current_expression_value()
-
-    def get_current_expression_value(self):
-        return self._math_expression(self._x)
     
     def generate_compiled_expression(self, expression):
         lambda_expression = "lambda x: "+expression

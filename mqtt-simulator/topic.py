@@ -100,7 +100,7 @@ class Topic(threading.Thread):
         if data['TYPE'] == 'bool':
             return not old_value
         elif data['TYPE'] == 'math_expression':
-            return self.expression_evaluators[data['NAME']].evaluate_expression()
+            return self.expression_evaluators[data['NAME']].get_next_expression_value()
         elif data['TYPE'] == 'raw_values':
             # iterate the raw_values then restart, return next, or disconnect at the end_index
             end_index = data.get('INDEX_END', len(data['VALUES']) - 1)
