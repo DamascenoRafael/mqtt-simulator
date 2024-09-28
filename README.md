@@ -120,6 +120,7 @@ docker run mqtt-simulator -f <path/settings.json>
     | `RETAIN` | bool | Overwrites the broker level config value and applies only to this Topic | no |
     | `QOS` | number | Overwrites the broker level config value and applies only to this Topic | no |
     | `TIME_INTERVAL` | number |  Overwrites the broker level config value and applies only to this Topic | no |
+    | `PAYLOAD_ROOT` | object | The root set of params to include on all messages | optional |
     | `DATA` | array\<object> | Specification of the data that will form the JSON to be sent in the topic | yes |
 
 * The key **DATA** inside TOPICS has a array of objects where each one has the format:
@@ -161,7 +162,6 @@ docker run mqtt-simulator -f <path/settings.json>
     | `RESTART_ON_END` | bool | When true and the index of the `VALUES` array reaches `INDEX_END` the next value will be the `INDEX_START`. Otherwise the client will `disconnect` when reaching the end | optional, default is false. Only valid if `TYPE` is `"raw_values"` |
     | `VALUES` | array\<any> | The values to be published in array order | if `TYPE` is `"raw_values"` |
     | `VALUE_DEFAULT` | object | The default value params used or overwritten by params in `VALUES` | optional, default is `{}`. Only valid if `TYPE` is `"raw_values"` |
-    | `PAYLOAD_ROOT` | object | The root set of params to include on all messages | optional |
 
     > **_NOTE:_** Access [math_expression.md](./math_expression.md) file for more explanations and a example of `TYPE: "math_expression"`.
 

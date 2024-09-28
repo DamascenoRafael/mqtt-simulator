@@ -86,13 +86,13 @@
             "TYPE": "single",
             "PREFIX": "location",
             "TIME_INTERVAL": 5,
+            "PAYLOAD_ROOT": {
+                "all": "messages"
+            },
             "DATA": [
                 {
                     "NAME": "coordinate",
                     "TYPE": "raw_values",
-                    "PAYLOAD_ROOT": {
-                      "all": "messages"
-                    },
                     "VALUE_DEFAULT": {
                       "key": "loc_default"
                     },

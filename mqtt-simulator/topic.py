@@ -2,40 +2,39 @@ import time
 import json
 import random
 import threading
-from abc import ABC, abstractmethod
 import paho.mqtt.client as mqtt
 from data_classes import BrokerSettings, ClientSettings
 from expression_evaluator import ExpressionEvaluator
 from utils import shouldRunWithProbability
 
-class Topic(ABC, threading.Thread):
-    def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
+class Topic(threading.Thread):
+    def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_payload_root: object, client_settings: ClientSettings):
         threading.Thread.__init__(self, args = (), kwargs = None)
 
         self.broker_settings = broker_settings
 
         self.topic_url = topic_url
         self.topic_data = topic_data
-        self.topic_client_settings = topic_client_settings
+        self.topic_payload_root = topic_payload_root
+
+        self.client_settings = client_settings
 
         self.loop = False
         self.client = None
         self.old_payload = None
 
-    @abstractmethod
-    def generate_initial_value(self, data):
-        pass
-    
-    @abstractmethod
-    def generate_next_value(self, data, old_value):
-        pass
+        # Relevant for when TYPE is 'math_expression'
+        self.expression_evaluators = {}
+
+        # Relevant for when TYPE is 'raw_values'
+        self.raw_values_index = 0
 
     def connect(self):
         self.loop = True
         if self.broker_settings.protocol == mqtt.MQTTv5:
             self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol)
         else:
-            self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol, clean_session=self.topic_client_settings.clean)
+            self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol, clean_session=self.client_settings.clean)
         self.client.on_publish = self.on_publish
         self.client.connect(self.broker_settings.url, self.broker_settings.port)
         self.client.loop_start()
@@ -50,36 +49,24 @@ class Topic(ABC, threading.Thread):
         while self.loop:
             payload = self.generate_payload()
             self.old_payload = payload
-            self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=self.topic_client_settings.qos, retain=self.topic_client_settings.retain)
-            time.sleep(self.topic_client_settings.time_interval)
+            self.client.publish(topic=self.topic_url, payload=json.dumps(payload), qos=self.client_settings.qos, retain=self.client_settings.retain)
+            time.sleep(self.client_settings.time_interval)
 
     def on_publish(self, client, userdata, result):
         print(f'[{time.strftime("%H:%M:%S")}] Data published on: {self.topic_url}')
 
     def generate_payload(self):
         payload = {}
+        payload.update(self.topic_payload_root)
         if self.old_payload == None:
             # generate initial data
             for data in self.topic_data:
-                payload.update(data.get('PAYLOAD_ROOT', {}))
                 payload[data['NAME']] = self.generate_initial_value(data)
         else:
             # generate next data
             for data in self.topic_data:
-                payload.update(data.get('PAYLOAD_ROOT', {}))
                 payload[data['NAME']] = self.generate_next_value(data, self.old_payload[data['NAME']])
         return payload
-
-
-class TopicAuto(Topic):
-    def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_client_settings: ClientSettings):
-        Topic.__init__(self, broker_settings, topic_url, topic_data, topic_client_settings)
-
-        # Relevant for when TYPE is 'math_expression'
-        self.expression_evaluators = {}
-
-        # Relevant for when TYPE is 'raw_values'
-        self.raw_values_index = 0
 
     def generate_initial_value(self, data):
         if 'INITIAL_VALUE' in data:
