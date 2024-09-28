@@ -101,12 +101,10 @@ class TopicAuto(Topic):
             return value
             
     def generate_next_value(self, data, old_value):
-        if shouldRunWithProbability(data.get('RESET_PROBABILITY', 0)):
-            return self.generate_initial_value(data)
-        if data.get('RESTART_ON_BOUNDARIES', False) and (old_value == data.get('MIN_VALUE') or old_value == data.get('MAX_VALUE')):
-            return self.generate_initial_value(data)
         if shouldRunWithProbability(data.get('RETAIN_PROBABILITY', 0)):
             return old_value
+        if shouldRunWithProbability(data.get('RESET_PROBABILITY', 0)):
+            return self.generate_initial_value(data)
         if data['TYPE'] == 'bool':
             return not old_value
         elif data['TYPE'] == 'math_expression':
@@ -126,6 +124,8 @@ class TopicAuto(Topic):
                 self.disconnect()
         else:
             # generating value for int or float
+            if data.get('RESTART_ON_BOUNDARIES', False) and (old_value == data.get('MIN_VALUE') or old_value == data.get('MAX_VALUE')):
+                return self.generate_initial_value(data)
             step = random.uniform(0, data['MAX_STEP'])
             step = round(step) if data['TYPE'] == 'int' else step
             increase_probability = data['INCREASE_PROBABILITY'] if 'INCREASE_PROBABILITY' in data else 0.5

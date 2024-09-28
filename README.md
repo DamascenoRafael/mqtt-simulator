@@ -5,7 +5,7 @@ Easy-to-configure MQTT simulator written in [Python 3](https://www.python.org/) 
 [Features](#features) •
 [Getting Started](#getting-started) •
 [Configuration](#configuration) •
-[Authors](#authors)
+[Main contributors](#main-contributors)
 
 ![Simulator Running](images/simulator-running.gif)
 
@@ -89,7 +89,7 @@ docker run mqtt-simulator -f <path/settings.json>
     | `RETAIN` | bool | False | Sets the [paho.mqtt.publish] `retain` param which sets the “last known good”/retained message for the topic |
     | `QOS` | number | 2 | Sets the [paho.mqtt.publish] `qos` param which is the quality of service level to use |
     | `TIME_INTERVAL` | number | 10 | Time interval in seconds between submissions towards the topic |
-    | `TOPICS` | array\<Objects> | None | Specification of topics and how they will be published |
+    | `TOPICS` | array\<object> | None | Specification of topics and how they will be published |
 
 [paho.mqtt.client]:https://pypi.org/project/paho-mqtt/#constructor-reinitialise
 [paho.mqtt.publish]:https://pypi.org/project/paho-mqtt/#publishing
@@ -120,7 +120,7 @@ docker run mqtt-simulator -f <path/settings.json>
     | `RETAIN` | bool | Overwrites the broker level config value and applies only to this Topic | no |
     | `QOS` | number | Overwrites the broker level config value and applies only to this Topic | no |
     | `TIME_INTERVAL` | number |  Overwrites the broker level config value and applies only to this Topic | no |
-    | `DATA` | array\<Objects> | Specification of the data that will form the JSON to be sent in the topic | yes |
+    | `DATA` | array\<object> | Specification of the data that will form the JSON to be sent in the topic | yes |
 
 * The key **DATA** inside TOPICS has a array of objects where each one has the format:
 
@@ -143,12 +143,12 @@ docker run mqtt-simulator -f <path/settings.json>
     | --- | --- | --- | --- |
     | `NAME` | string | JSON property name to be sent | yes |
     | `TYPE` | string | It can be `"int"`, `"float"`, `"bool"`, `"math_expression"`, or `"raw_values"` | yes |
-    | `INITIAL_VALUE` | number or bool (same as defined in `TYPE`) | Initial value that the property will assume when the simulation starts (random otherwise) | optional. Only valid if `TYPE` is different from `"math_expression"` |
+    | `INITIAL_VALUE` | same that is returned according to `TYPE` | Initial value that the property will assume when the simulation starts. If not specified: random for `"int"`, `"float"` or `"bool"`, and determined by other parameters for `"math_expression"`, or `"raw_values"` | optional |
     | `MIN_VALUE` | number | Minimum value that the property can assume | if `TYPE` is `"int"` or `"float"` |
     | `MAX_VALUE` | number | Maximum value that the property can assume | if `TYPE` is `"int"` or `"float"`  |
     | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | if `TYPE` is `"int"` or `"float"` |
-    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being retained and sent again | yes |
-    | `RESET_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being reset to `INITIAL_VALUE` | optional, default is `0`. Only valid if `TYPE` is different from `"math_expression"` |
+    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being retained and sent again | optional, default is `0` |
+    | `RESET_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being reset to `INITIAL_VALUE` | optional, default is `0` |
     | `INCREASE_PROBABILITY` | number | Number between 0 and 1 for the probability of the next value being greater than the previous one | optional, default is `0.5` (same probability to increase or decrease). Only valid if `TYPE` is `"int"` or `"float"` |
     | `RESTART_ON_BOUNDARIES` | bool | When true and the value reaches `MAX_VALUE` or `MIN_VALUE` the next value will be the `INITIAL_VALUE` | optional, default is false. Only valid if `TYPE` is `"int"` or `"float"` |
     | `MATH_EXPRESSION` | string | Math expression written in a *Pythonic* way<br/> Also accept functions from [Math modules](https://docs.python.org/3/library/math.html)  | if `TYPE` is `"math_expression"` |
@@ -160,8 +160,8 @@ docker run mqtt-simulator -f <path/settings.json>
     | `INDEX_END` | number | The index to end publishing from the `VALUES` array | optional, default is `len(values) - 1`. Only valid if `TYPE` is `"raw_values"` |
     | `RESTART_ON_END` | bool | When true and the index of the `VALUES` array reaches `INDEX_END` the next value will be the `INDEX_START`. Otherwise the client will `disconnect` when reaching the end | optional, default is false. Only valid if `TYPE` is `"raw_values"` |
     | `VALUES` | array\<any> | The values to be published in array order | if `TYPE` is `"raw_values"` |
-    | `VALUE_DEFAULT` | object\<any> | The default value params used or overwritten by params in `VALUES` | optional, default is `{}`. Only valid if `TYPE` is `"raw_values"` |
-    | `PAYLOAD_ROOT` | object\<any> | The root set of params to include on all messages | optional |
+    | `VALUE_DEFAULT` | object | The default value params used or overwritten by params in `VALUES` | optional, default is `{}`. Only valid if `TYPE` is `"raw_values"` |
+    | `PAYLOAD_ROOT` | object | The root set of params to include on all messages | optional |
 
     > **_NOTE:_** Access [math_expression.md](./math_expression.md) file for more explanations and a example of `TYPE: "math_expression"`.
 
