@@ -143,8 +143,8 @@ docker run mqtt-simulator -f <path/settings.json>
     | Key | Type | Description | Required |
     | --- | --- | --- | --- |
     | `NAME` | string | JSON property name to be sent | yes |
-    | `TYPE` | string | It can be `"int"`, `"float"`, `"bool"`, `"math_expression"`, or `"raw_values"` | yes |
-    | `INITIAL_VALUE` | same that is returned according to `TYPE` | Initial value that the property will assume when the simulation starts. If not specified: random for `"int"`, `"float"` or `"bool"`, and determined by other parameters for `"math_expression"`, or `"raw_values"` | optional |
+    | `TYPE` | string | It can be `"int"`, `"float"`, `"bool"`, `"math_expression"` or `"raw_values"` | yes |
+    | `INITIAL_VALUE` | same that is returned according to `TYPE` | Initial value that the property will assume when the simulation starts. If not specified: random for `"int"`, `"float"` or `"bool"`, and determined by other parameters for `"math_expression"` or `"raw_values"` | optional |
     | `MIN_VALUE` | number | Minimum value that the property can assume | if `TYPE` is `"int"` or `"float"` |
     | `MAX_VALUE` | number | Maximum value that the property can assume | if `TYPE` is `"int"` or `"float"`  |
     | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | if `TYPE` is `"int"` or `"float"` |
@@ -152,14 +152,14 @@ docker run mqtt-simulator -f <path/settings.json>
     | `RESET_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being reset to `INITIAL_VALUE` | optional, default is `0` |
     | `INCREASE_PROBABILITY` | number | Number between 0 and 1 for the probability of the next value being greater than the previous one | optional, default is `0.5` (same probability to increase or decrease). Only valid if `TYPE` is `"int"` or `"float"` |
     | `RESTART_ON_BOUNDARIES` | bool | When true and the value reaches `MAX_VALUE` or `MIN_VALUE` the next value will be the `INITIAL_VALUE` | optional, default is false. Only valid if `TYPE` is `"int"` or `"float"` |
-    | `MATH_EXPRESSION` | string | Math expression written in a *Pythonic* way<br/> Also accept functions from [Math modules](https://docs.python.org/3/library/math.html)  | if `TYPE` is `"math_expression"` |
+    | `MATH_EXPRESSION` | string | Math expression written in a *Pythonic* way. Also accept functions from [Math modules](https://docs.python.org/3/library/math.html)  | if `TYPE` is `"math_expression"` |
     | `INTERVAL_START` | number | Minimum value that the `MATH_EXPRESSION`'s variable `x` can assume | if `TYPE` is `"math_expression"` |
     | `INTERVAL_END` | number | Maximum value that the `MATH_EXPRESSION`'s variable `x` can assume | if `TYPE` is `"math_expression"` |
     | `MIN_DELTA` | number | Minimum value that can be added to the  `MATH_EXPRESSION`'s variable `x` from a published data to the next | if `TYPE` is `"math_expression"` |
     | `MAX_DELTA` | number | Maximum value that can be added to the  `MATH_EXPRESSION`'s variable `x` from a published data to the next | if `TYPE` is `"math_expression"` |
     | `INDEX_START` | number | The index to start publishing from the `VALUES` array | optional, default is `0`. Only valid if `TYPE` is `"raw_values"` |
     | `INDEX_END` | number | The index to end publishing from the `VALUES` array | optional, default is `len(values) - 1`. Only valid if `TYPE` is `"raw_values"` |
-    | `RESTART_ON_END` | bool | When true and the index of the `VALUES` array reaches `INDEX_END` the next value will be the `INDEX_START`. Otherwise the client will `disconnect` when reaching the end | optional, default is false. Only valid if `TYPE` is `"raw_values"` |
+    | `RESTART_ON_END` | bool | When true and the index of the `VALUES` array reaches `INDEX_END`, the next index will be `INDEX_START`. Otherwise, the param will become inactive and won’t be sent after reaching `INDEX_END` | optional, default is false. Only valid if `TYPE` is `"raw_values"` |
     | `VALUES` | array\<any> | The values to be published in array order | if `TYPE` is `"raw_values"` |
     | `VALUE_DEFAULT` | object | The default value params used or overwritten by params in `VALUES` | optional, default is `{}`. Only valid if `TYPE` is `"raw_values"` and `VALUES` is an array\<object> |
 
