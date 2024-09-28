@@ -1,6 +1,5 @@
 import json
-from data_classes.broker_settings import BrokerSettings
-from data_classes.client_settings import ClientSettings
+from data_classes import BrokerSettings, ClientSettings
 from topic import TopicAuto
 
 class Simulator:

@@ -4,8 +4,7 @@ import random
 import threading
 from abc import ABC, abstractmethod
 import paho.mqtt.client as mqtt
-from data_classes.broker_settings import BrokerSettings
-from data_classes.client_settings import ClientSettings
+from data_classes import BrokerSettings, ClientSettings
 from expression_evaluator import ExpressionEvaluator
 
 class Topic(ABC, threading.Thread):
