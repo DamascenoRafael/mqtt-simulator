@@ -54,9 +54,12 @@ class Simulator:
     def run(self):
         for topic in self.topics:
             print(f'Starting: {topic.topic_url} ...')
-            topic.start() 
+            topic.start()
+        for topic in self.topics:
+            # workaround for Python 3.12
+            topic.join()
 
     def stop(self):
         for topic in self.topics:
             print(f'Stopping: {topic.topic_url} ...')
-            topic.stop() 
+            topic.stop()

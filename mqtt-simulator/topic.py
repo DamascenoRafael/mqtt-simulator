@@ -7,7 +7,7 @@ from topic_data import TopicDataNumber, TopicDataBool, TopicDataRawValue, TopicD
 
 class Topic(threading.Thread):
     def __init__(self, broker_settings: BrokerSettings, topic_url: str, topic_data: list[object], topic_payload_root: object, client_settings: ClientSettings):
-        threading.Thread.__init__(self, args = (), kwargs = None)
+        threading.Thread.__init__(self)
 
         self.broker_settings = broker_settings
 
