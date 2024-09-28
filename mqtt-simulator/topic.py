@@ -67,7 +67,7 @@ class Topic(threading.Thread):
         payload.update(self.topic_payload_root)
         has_data_active = False
         for data in self.topic_data:
-            if data.isActive:
+            if data.is_active:
                 has_data_active = True
                 payload[data.name] = data.generate_value()
         if not has_data_active:

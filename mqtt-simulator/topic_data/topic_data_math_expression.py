@@ -6,7 +6,7 @@ class TopicDataMathExpression(TopicData):
     def __init__(self, data):
         super().__init__(data)
         self.expression_evaluator = None
-    
+
     def generate_initial_value(self):
         self.expression_evaluator = ExpressionEvaluator(self.data['MATH_EXPRESSION'], self.data['INTERVAL_START'], self.data['INTERVAL_END'], self.data['MIN_DELTA'], self.data['MAX_DELTA'])
         return self.expression_evaluator.get_current_expression_value()
@@ -26,15 +26,15 @@ class ExpressionEvaluator():
 
     def get_current_expression_value(self):
         return self._math_expression(self._x)
-    
+
     def get_next_expression_value(self):
         if self._x > self._interval_end:
             self._x = self._interval_start
             return self.get_current_expression_value()
-        step = random.uniform(self._min_delta, self._max_delta) 
+        step = random.uniform(self._min_delta, self._max_delta)
         self._x += step
         return self.get_current_expression_value()
-    
+
     def generate_compiled_expression(self, expression):
         lambda_expression = "lambda x: "+expression
         code = compile(lambda_expression, "<string>", "eval")
