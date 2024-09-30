@@ -86,34 +86,43 @@
             "TYPE": "single",
             "PREFIX": "location",
             "TIME_INTERVAL": 5,
+            "PAYLOAD_ROOT": {
+                "user_id": "abc123"
+            },
             "DATA": [
+                {
+                    "NAME": "position",
+                    "TYPE": "raw_values",
+                    "RESTART_ON_END": true,
+                    "VALUES": [
+                        "moving",
+                        "stopped"
+                    ]
+                },
                 {
                     "NAME": "coordinate",
                     "TYPE": "raw_values",
-                    "PAYLOAD_ROOT": {
-                      "all": "messages"
-                    },
                     "VALUE_DEFAULT": {
-                      "key": "loc_default"
+                      "alt": 0
                     },
                     "RESTART_ON_END": true,
                     "VALUES": [
                         {
+                            "alt": 0.1,
                             "lat": -121.883682,
                             "long": 37.354635
                         },
                         {
-                            "key": "loc_a",
                             "lat": -121.883352,
                             "long": 37.354192
                         },
                         {
-                            "key": "loc_b",
+                            "alt": 0.15,
                             "lat": -121.884284,
                             "long": 37.353757
                         },
                         {
-                            "key": "loc_c",
+                            "alt": 0.22,
                             "lat": -121.885227,
                             "long": 37.353324
                         }
