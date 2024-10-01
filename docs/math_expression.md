@@ -1,6 +1,6 @@
 # MQTT Simulator - Data type `math_expression`
 
-For general information on how to configure the MQTT Simulator see the [README.md](./README.md) file.
+For general information on how to configure the MQTT Simulator see the [README.md](../README.md) file.
 
 For `TYPE: "math_expression"` we need five required configuration parameters: `MATH_EXPRESSION`, `INTERVAL_START`, `INTERVAL_END`, `MIN_DELTA` and `MAX_DELTA`. Each of these have some notes:
 
@@ -55,7 +55,7 @@ In the example below the `MATH_EXPRESION` = $2x²+1$, `INTERVAL_START = 0`, `INT
 
 ```
 
-![Freezer Temperature Example](images/expression-example-freezer.gif)
+![Freezer Temperature Example](../images/expression-example-freezer.gif)
 
 ## Example 2 - Car Velocity
 
@@ -82,4 +82,4 @@ In the example below the `MATH_EXPRESION` = $\sqrt{75x}$, `INTERVAL_START = 0`, 
 }
 ```
 
-![Freezer Temperature Example](images/expression-example-car.gif)
+![Freezer Temperature Example](../images/expression-example-car.gif)

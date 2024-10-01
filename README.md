@@ -19,11 +19,11 @@ Easy-to-configure MQTT simulator written in [Python 3](https://www.python.org/) 
 
 ## Getting Started
 
-#### Prerequisites
+### Prerequisites
 
 * [Python 3](https://www.python.org/) (with pip)
 
-#### Installing Dependencies
+### Installing Dependencies
 
 To install all dependencies with a virtual environment:
 
@@ -33,7 +33,7 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-#### Running
+### Running
 
 The default simulator settings can be changed in the `config/settings.json` file.
 
@@ -50,7 +50,7 @@ Optionally, you can pass a flag with the path to settings file:
 python3 mqtt-simulator/main.py -f <path/settings.json>
 ```
 
-#### Running using Docker
+### Running using Docker
 
 Additionally, you can run via [Docker](https://docs.docker.com/get-docker/) with the included `Dockerfile`.
 
@@ -144,12 +144,12 @@ docker run mqtt-simulator -f <path/settings.json>
     | --- | --- | --- | --- |
     | `NAME` | string | JSON property name to be sent | yes |
     | `TYPE` | string | It can be `"int"`, `"float"`, `"bool"`, `"math_expression"` or `"raw_values"` | yes |
+    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being retained and sent again | optional, default is `0` |
+    | `RESET_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being reset to `INITIAL_VALUE` | optional, default is `0` |
     | `INITIAL_VALUE` | same that is returned according to `TYPE` | Initial value that the property will assume when the simulation starts. If not specified: random for `"int"`, `"float"` or `"bool"`, and determined by other parameters for `"math_expression"` or `"raw_values"` | optional |
     | `MIN_VALUE` | number | Minimum value that the property can assume | if `TYPE` is `"int"` or `"float"` |
     | `MAX_VALUE` | number | Maximum value that the property can assume | if `TYPE` is `"int"` or `"float"`  |
     | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | if `TYPE` is `"int"` or `"float"` |
-    | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being retained and sent again | optional, default is `0` |
-    | `RESET_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being reset to `INITIAL_VALUE` | optional, default is `0` |
     | `INCREASE_PROBABILITY` | number | Number between 0 and 1 for the probability of the next value being greater than the previous one | optional, default is `0.5` (same probability to increase or decrease). Only valid if `TYPE` is `"int"` or `"float"` |
     | `RESTART_ON_BOUNDARIES` | bool | When true and the value reaches `MAX_VALUE` or `MIN_VALUE` the next value will be the `INITIAL_VALUE` | optional, default is false. Only valid if `TYPE` is `"int"` or `"float"` |
     | `MATH_EXPRESSION` | string | Math expression written in a *Pythonic* way. Also accept functions from [Math modules](https://docs.python.org/3/library/math.html)  | if `TYPE` is `"math_expression"` |
@@ -163,7 +163,7 @@ docker run mqtt-simulator -f <path/settings.json>
     | `VALUES` | array\<any> | The values to be published in array order | if `TYPE` is `"raw_values"` |
     | `VALUE_DEFAULT` | object | The default value params used or overwritten by params in `VALUES` | optional, default is `{}`. Only valid if `TYPE` is `"raw_values"` and `VALUES` is an array\<object> |
 
-    > **_NOTE:_** Access [math_expression.md](./math_expression.md) file for more explanations and a example of `TYPE: "math_expression"`.
+    > **_NOTE:_** Access [math_expression.md](./docs/math_expression.md) file for more explanations and a example of `TYPE: "math_expression"`.
 
 ## Main contributors
 
