@@ -1,12 +1,7 @@
-name: Build multi-platform image and push to ghcr.io
+name: Publish Docker image to ghcr.io
 
 on:
   push:
-    branches:
-      - "**"
-    tags:
-      - "v*.*.*"
-  pull_request:
     branches:
       - "master"
 
