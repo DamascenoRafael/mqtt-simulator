@@ -27,15 +27,19 @@ The **Broker settings** section is located at the root level of the JSON configu
 | --- | --- | --- | --- |
 | `BROKER_URL` | string | localhost | The broker URL where the data will be published |
 | `BROKER_PORT` | number | 1883 | The port used by the broker |
-| `PROTOCOL_VERSION` | number | 4 | Sets the [paho.mqtt.client] `protocol` param which is the version of the MQTT protocol to use for this client. Can be either `3` (MQTTv31), `4` (MQTTv311) or `5` (MQTTv5) |
-| `CLEAN_SESSION` | bool | True | Sets the [paho.mqtt.client] `clean_session` param which is a boolean that determines the client type. This property is ignored if `PROTOCOL_VERSION` is `5`. |
-| `RETAIN` | bool | False | Sets the [paho.mqtt.publish] `retain` param which sets the “last known good”/retained message for the topic |
-| `QOS` | number | 2 | Sets the [paho.mqtt.publish] `qos` param which is the quality of service level to use |
+| `PROTOCOL_VERSION` | number | 4 | Sets the [paho.mqtt.client] `protocol` param. Version of the MQTT protocol to use for this client. Can be either `3` (MQTTv31), `4` (MQTTv311) or `5` (MQTTv5) |
+| `CLEAN_SESSION` | bool | True | Sets the [paho.mqtt.client] `clean_session` param. Boolean that determines the client type. This property is ignored if `PROTOCOL_VERSION` is `5`. |
+| `RETAIN` | bool | False | Sets the [paho.mqtt.client.publish] `retain` param. If set to true, the message will be set as the “last known good”/retained message for the topic |
+| `QOS` | number | 2 | Sets the [paho.mqtt.client.publish] `qos` param. Quality of service level to use |
+| `TLS_CA_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `ca_certs` param. String path to the Certificate Authority certificate file |
+| `TLS_CERT_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `certfile` param. String path to the PEM encoded client certificate file |
+| `TLS_KEY_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `keyfile` param. String path to the PEM encoded client private keys file |
 | `TIME_INTERVAL` | number | 10 | Time interval in seconds between submissions towards the topic |
 | `TOPICS` | array\<object> | None | Specification of topics and how they will be published |
 
-[paho.mqtt.client]:https://pypi.org/project/paho-mqtt/#constructor-reinitialise
-[paho.mqtt.publish]:https://pypi.org/project/paho-mqtt/#publishing
+[paho.mqtt.client]:https://eclipse.dev/paho/files/paho.mqtt.python/html/client.html#paho.mqtt.client.Client
+[paho.mqtt.client.publish]:https://eclipse.dev/paho/files/paho.mqtt.python/html/client.html#paho.mqtt.client.Client.publish
+[paho.mqtt.client.tls_set]:https://eclipse.dev/paho/files/paho.mqtt.python/html/client.html#paho.mqtt.client.Client.tls_set
 
 ## Topics settings
 

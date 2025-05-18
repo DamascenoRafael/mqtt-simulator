@@ -1,4 +1,5 @@
 import time
+import ssl
 import json
 import threading
 import paho.mqtt.client as mqtt
@@ -53,6 +54,15 @@ class Topic(threading.Thread):
             clean_session=clean_session,
         )
         self.client.on_publish = self.on_publish
+        if self.broker_settings.is_tls_enabled:
+            self.client.tls_set(
+                ca_certs=self.broker_settings.tls_ca_path,
+                certfile=self.broker_settings.tls_cert_path,
+                keyfile=self.broker_settings.tls_key_path,
+                cert_reqs=ssl.CERT_REQUIRED,
+                tls_version=ssl.PROTOCOL_TLSv1_2,
+                ciphers=None,
+            )
         self.client.connect(self.broker_settings.url, self.broker_settings.port)
         self.client.loop_start()
 

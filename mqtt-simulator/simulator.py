@@ -23,6 +23,9 @@ class Simulator:
                 url=config.get("BROKER_URL", "localhost"),
                 port=config.get("BROKER_PORT", 1883),
                 protocol=config.get("PROTOCOL_VERSION", 4), # mqtt.MQTTv311
+                tls_ca_path=config.get("TLS_CA_PATH", None),
+                tls_cert_path=config.get("TLS_CERT_PATH", None),
+                tls_key_path=config.get("TLS_KEY_PATH", None),
             )
             broker_client_settings = self.read_client_settings(config, default=self.default_client_settings)
             # read each configured topic
