@@ -5,5 +5,5 @@ description = "A lightweight, easy-to-configure MQTT simulator written in Python
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "paho-mqtt==1.5.0",
+    "paho-mqtt==2.1.0",
 ]

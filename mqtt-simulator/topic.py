@@ -40,7 +40,7 @@ class Topic(threading.Thread):
     def connect(self):
         self.loop = True
         clean_session = None if self.broker_settings.protocol == mqtt.MQTTv5 else self.client_settings.clean
-        self.client = mqtt.Client(self.topic_url, protocol=self.broker_settings.protocol, clean_session=clean_session)
+        self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, protocol=self.broker_settings.protocol, clean_session=clean_session)
         self.client.on_publish = self.on_publish
         self.client.connect(self.broker_settings.url, self.broker_settings.port)
         self.client.loop_start()
@@ -57,7 +57,7 @@ class Topic(threading.Thread):
             self.client.publish(topic=self.topic_url, payload=json.dumps(self.payload), qos=self.client_settings.qos, retain=self.client_settings.retain)
             time.sleep(self.client_settings.time_interval)
 
-    def on_publish(self, client, userdata, result):
+    def on_publish(self, client, userdata, mid, reason_code, properties):
         print(f'[{time.strftime("%H:%M:%S")}] Data published on: {self.topic_url}')
 
     def generate_payload(self):
