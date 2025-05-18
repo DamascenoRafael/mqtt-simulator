@@ -50,7 +50,7 @@
         },
         {
             "TYPE": "list",
-            "PREFIX": "temperature",
+            "PREFIX": "place",
             "LIST": ["roof", "basement"],
             "TIME_INTERVAL": 8,
             "DATA": [
