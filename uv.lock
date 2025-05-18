@@ -1,0 +1,20 @@
+version = 1
+revision = 2
+requires-python = ">=3.13"
+
+[[package]]
+name = "mqtt-simulator"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "paho-mqtt" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "paho-mqtt", specifier = "==1.5.0" }]
+
+[[package]]
+name = "paho-mqtt"
+version = "1.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/59/11/1dd5c70f0f27a88a3a05772cd95f6087ac479fac66d9c7752ee5e16ddbbc/paho-mqtt-1.5.0.tar.gz", hash = "sha256:e3d286198baaea195c8b3bc221941d25a3ab0e1507fc1779bdb7473806394be4", size = 99525, upload-time = "2019-10-30T21:29:55.744Z" }

@@ -42,6 +42,14 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
+### Running using uv
+
+Run the simulator with [uv](https://github.com/astral-sh/uv), a fast Python package and project manager - no need to manually setup a virtual environment:
+
+```shell
+uv run mqtt-simulator/main.py -f <path/settings.json>
+```
+
 ### Running using Docker
 
 Additionally, you can run the simulator via [Docker](https://docs.docker.com/get-docker/) using the provided `Dockerfile`.
