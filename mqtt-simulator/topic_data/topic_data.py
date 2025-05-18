@@ -4,7 +4,7 @@ from utils import should_run_with_probability
 class TopicData(ABC):
     def __init__(self, data):
         self.data = data
-        self.name = data['NAME']
+        self.name = data["NAME"]
         self.is_active = True
         self.old_value = None
 
@@ -12,15 +12,15 @@ class TopicData(ABC):
         new_value = None
         if self.old_value is None:
             # generate initial data
-            if 'INITIAL_VALUE' in self.data:
-                new_value = self.data['INITIAL_VALUE']
+            if "INITIAL_VALUE" in self.data:
+                new_value = self.data["INITIAL_VALUE"]
             else:
                 new_value = self.generate_initial_value()
         else:
             # generate next data
-            if should_run_with_probability(self.data.get('RETAIN_PROBABILITY', 0)):
+            if should_run_with_probability(self.data.get("RETAIN_PROBABILITY", 0)):
                 new_value = self.old_value
-            elif should_run_with_probability(self.data.get('RESET_PROBABILITY', 0)):
+            elif should_run_with_probability(self.data.get("RESET_PROBABILITY", 0)):
                 new_value = self.generate_initial_value()
             else:
                 new_value = self.generate_next_value()
