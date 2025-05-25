@@ -1,13 +1,14 @@
 import json
+from pathlib import Path
 from topic import Topic
 from data_classes import BrokerSettings, ClientSettings
 
 class Simulator:
-    def __init__(self, settings_file):
+    def __init__(self, settings_file: Path):
         self.default_client_settings = ClientSettings(clean=True, retain=False, qos=2, time_interval=10)
         self.topics = self.load_topics(settings_file)
 
-    def read_client_settings(self, settings_dict: dict, default: ClientSettings):
+    def read_client_settings(self, settings_dict: dict, default: ClientSettings) -> ClientSettings:
         return ClientSettings(
             clean=settings_dict.get("CLEAN_SESSION", default.clean),
             retain=settings_dict.get("RETAIN", default.retain),
@@ -15,8 +16,8 @@ class Simulator:
             time_interval=settings_dict.get("TIME_INTERVAL", default.time_interval),
         )
 
-    def load_topics(self, settings_file):
-        topics = []
+    def load_topics(self, settings_file: Path) -> list[Topic]:
+        topics: list[Topic] = []
         with open(settings_file) as json_file:
             config = json.load(json_file)
             broker_settings = BrokerSettings(
