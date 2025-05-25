@@ -7,7 +7,7 @@ A lightweight, easy-to-configure MQTT simulator written in [Python 3](https://ww
 [Configuration](#configuration) •
 [Main contributors](#main-contributors)
 
-![Simulator Running](images/simulator-running.gif)
+![Simulator Running](docs/images/simulator-running.gif)
 
 ## Features
 

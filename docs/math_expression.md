@@ -55,7 +55,7 @@ In the example below the `MATH_EXPRESION` = $2x²+1$, `INTERVAL_START = 0`, `INT
 
 ```
 
-![Freezer Temperature Example](../images/expression-example-freezer.gif)
+![Freezer Temperature Example](images/expression-example-freezer.gif)
 
 ## Example 2 - Car Velocity
 
@@ -82,4 +82,4 @@ In the example below the `MATH_EXPRESION` = $\sqrt{75x}$, `INTERVAL_START = 0`, 
 }
 ```
 
-![Freezer Temperature Example](../images/expression-example-car.gif)
+![Freezer Temperature Example](images/expression-example-car.gif)

@@ -28,12 +28,12 @@ The **Broker settings** section is located at the root level of the JSON configu
 | `BROKER_URL` | string | localhost | The broker URL where the data will be published |
 | `BROKER_PORT` | number | 1883 | The port used by the broker |
 | `PROTOCOL_VERSION` | number | 4 | Sets the [paho.mqtt.client] `protocol` param. Version of the MQTT protocol to use for this client. Can be either `3` (MQTTv31), `4` (MQTTv311) or `5` (MQTTv5) |
-| `CLEAN_SESSION` | bool | True | Sets the [paho.mqtt.client] `clean_session` param. Boolean that determines the client type. This property is ignored if `PROTOCOL_VERSION` is `5`. |
-| `RETAIN` | bool | False | Sets the [paho.mqtt.client.publish] `retain` param. If set to true, the message will be set as the “last known good”/retained message for the topic |
-| `QOS` | number | 2 | Sets the [paho.mqtt.client.publish] `qos` param. Quality of service level to use |
 | `TLS_CA_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `ca_certs` param. String path to the Certificate Authority certificate file |
 | `TLS_CERT_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `certfile` param. String path to the PEM encoded client certificate file |
 | `TLS_KEY_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `keyfile` param. String path to the PEM encoded client private keys file |
+| `CLEAN_SESSION` | bool | True | Sets the [paho.mqtt.client] `clean_session` param. Boolean that determines the client type. This property is ignored if `PROTOCOL_VERSION` is `5`. |
+| `RETAIN` | bool | False | Sets the [paho.mqtt.client.publish] `retain` param. If set to true, the message will be set as the “last known good”/retained message for the topic |
+| `QOS` | number | 2 | Sets the [paho.mqtt.client.publish] `qos` param. Quality of service level to use |
 | `TIME_INTERVAL` | number | 10 | Time interval in seconds between submissions towards the topic |
 | `TOPICS` | array\<object> | None | Specification of topics and how they will be published |
 
@@ -95,9 +95,9 @@ The key **DATA** inside TOPICS is a list. Each data entry is an `object` contain
 | --- | --- | --- | --- |
 | `NAME` | string | JSON property name to be sent | yes |
 | `TYPE` | string | It can be `"int"`, `"float"`, `"bool"`, `"math_expression"` or `"raw_values"` | yes |
+| `INITIAL_VALUE` | same that is returned according to `TYPE` | Initial value that the property will assume when the simulation starts. If not specified: random for `"int"`, `"float"` or `"bool"`, and determined by other parameters for `"math_expression"` or `"raw_values"` | optional |
 | `RETAIN_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being retained and sent again | optional, default is `0` |
 | `RESET_PROBABILITY` | number | Number between 0 and 1 for the probability of the value being reset to `INITIAL_VALUE` | optional, default is `0` |
-| `INITIAL_VALUE` | same that is returned according to `TYPE` | Initial value that the property will assume when the simulation starts. If not specified: random for `"int"`, `"float"` or `"bool"`, and determined by other parameters for `"math_expression"` or `"raw_values"` | optional |
 | `MIN_VALUE` | number | Minimum value that the property can assume | if `TYPE` is `"int"` or `"float"` |
 | `MAX_VALUE` | number | Maximum value that the property can assume | if `TYPE` is `"int"` or `"float"`  |
 | `MAX_STEP` | number | Maximum change that can be applied to the property from a published data to the next | if `TYPE` is `"int"` or `"float"` |
