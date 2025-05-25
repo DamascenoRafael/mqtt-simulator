@@ -66,7 +66,7 @@ class Topic(threading.Thread):
         self.client.connect(self.broker_settings.url, self.broker_settings.port)
         self.client.loop_start()
 
-    def disconnect(self):
+    def stop(self):
         self.loop = False
         self.client.loop_stop()
         self.client.disconnect()
