@@ -5,7 +5,6 @@ from data_classes import BrokerSettings, ClientSettings
 
 class Simulator:
     def __init__(self, settings_file: Path):
-        self.default_client_settings = ClientSettings(clean=True, retain=False, qos=2, time_interval=10)
         self.topics = self.load_topics(settings_file)
 
     def read_client_settings(self, settings_dict: dict, default: ClientSettings) -> ClientSettings:
@@ -18,6 +17,7 @@ class Simulator:
 
     def load_topics(self, settings_file: Path) -> list[Topic]:
         topics: list[Topic] = []
+        default_client_settings = ClientSettings(clean=True, retain=False, qos=2, time_interval=10)
         with open(settings_file) as json_file:
             config = json.load(json_file)
             broker_settings = BrokerSettings(
