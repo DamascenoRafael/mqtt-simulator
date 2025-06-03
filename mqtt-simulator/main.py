@@ -2,10 +2,12 @@ import argparse
 from pathlib import Path
 from simulator import Simulator
 
+
 def default_settings() -> Path:
     base_folder = Path(__file__).resolve().parent.parent
     settings_file = base_folder / "config/settings.json"
     return settings_file
+
 
 def is_valid_file(arg: str) -> Path:
     settings_file = Path(arg)
@@ -13,9 +15,16 @@ def is_valid_file(arg: str) -> Path:
         raise argparse.ArgumentTypeError(f"argument -f/--file: can't open '{arg}'")
     return settings_file
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "-f", "--file", dest="settings_file", type=is_valid_file, help="settings file", default=default_settings()
+    "-f",
+    "--file",
+    dest="settings_file",
+    type=is_valid_file,
+    help="settings file",
+    default=default_settings(),
+    metavar="",
 )
 args = parser.parse_args()
 
