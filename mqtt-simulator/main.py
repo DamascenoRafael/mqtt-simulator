@@ -1,6 +1,7 @@
 import argparse
 from pathlib import Path
 from simulator import Simulator
+from utils.read_publishers import read_publishers
 
 
 def default_settings() -> Path:
@@ -22,7 +23,7 @@ parser.add_argument(
     "--file",
     dest="settings_file",
     type=is_valid_file,
-    help="settings file",
+    help="settings file path",
     default=default_settings(),
     metavar="",
 )
@@ -36,5 +37,6 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-simulator = Simulator(args.settings_file, args.is_verbose)
+publishers = read_publishers(args.settings_file, args.is_verbose)
+simulator = Simulator(publishers)
 simulator.run()

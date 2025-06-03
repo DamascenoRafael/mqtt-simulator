@@ -5,7 +5,7 @@ import time
 
 import paho.mqtt.client as mqtt
 from data_classes import BrokerSettings, ClientSettings
-from topic_data import TopicDataBool, TopicDataMathExpression, TopicDataNumber, TopicDataRawValue
+from topic_data import TopicData
 
 
 class Publisher(threading.Thread):
@@ -13,7 +13,7 @@ class Publisher(threading.Thread):
         self,
         broker_settings: BrokerSettings,
         topic_url: str,
-        topic_data: list[object],
+        topic_data: list[TopicData],
         topic_payload_root: object,
         client_settings: ClientSettings,
         is_verbose: bool,
@@ -23,7 +23,7 @@ class Publisher(threading.Thread):
         self.broker_settings = broker_settings
 
         self.topic_url = topic_url
-        self.topic_data = self.load_topic_data(topic_data)
+        self.topic_data = topic_data
         self.topic_payload_root = topic_payload_root
 
         self.client_settings = client_settings
@@ -32,22 +32,6 @@ class Publisher(threading.Thread):
         self.loop = False
         self.client = None
         self.payload = None
-
-    def load_topic_data(self, topic_data_object):
-        topic_data = []
-        for data in topic_data_object:
-            data_type = data["TYPE"]
-            if data_type == "int" or data_type == "float":
-                topic_data.append(TopicDataNumber(data))
-            elif data_type == "bool":
-                topic_data.append(TopicDataBool(data))
-            elif data_type == "raw_values":
-                topic_data.append(TopicDataRawValue(data))
-            elif data_type == "math_expression":
-                topic_data.append(TopicDataMathExpression(data))
-            else:
-                raise NameError(f"Data TYPE '{data_type}' is unknown")
-        return topic_data
 
     def connect(self):
         self.loop = True
