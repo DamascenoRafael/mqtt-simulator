@@ -1,6 +1,6 @@
 import random
 from .topic_data import TopicData
-from utils import should_run_with_probability
+from utils.should_run_with_probability import should_run_with_probability
 
 class TopicDataNumber(TopicData):
     def __init__(self, data):

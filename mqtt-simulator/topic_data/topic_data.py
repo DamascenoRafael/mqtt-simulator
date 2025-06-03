@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from utils import should_run_with_probability
+from utils.should_run_with_probability import should_run_with_probability
 
 class TopicData(ABC):
     def __init__(self, data):
