@@ -26,7 +26,15 @@ parser.add_argument(
     default=default_settings(),
     metavar="",
 )
+parser.add_argument(
+    "-v",
+    "--verbose",
+    dest="is_verbose",
+    action="store_true",
+    help="enable verbose output",
+    default=False
+)
 args = parser.parse_args()
 
-simulator = Simulator(args.settings_file)
+simulator = Simulator(args.settings_file, args.is_verbose)
 simulator.run()

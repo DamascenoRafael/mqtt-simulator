@@ -16,6 +16,7 @@ class Publisher(threading.Thread):
         topic_data: list[object],
         topic_payload_root: object,
         client_settings: ClientSettings,
+        is_verbose: bool,
     ):
         threading.Thread.__init__(self)
 
@@ -26,6 +27,7 @@ class Publisher(threading.Thread):
         self.topic_payload_root = topic_payload_root
 
         self.client_settings = client_settings
+        self.is_verbose = is_verbose
 
         self.loop = False
         self.client = None
@@ -86,7 +88,10 @@ class Publisher(threading.Thread):
             time.sleep(self.client_settings.time_interval)
 
     def on_publish(self, client, userdata, mid, reason_code, properties):
-        print(f"[{time.strftime('%H:%M:%S')}] Data published on: {self.topic_url}")
+        on_publish_log = f"[{time.strftime('%H:%M:%S')}] Data published on: {self.topic_url}"
+        if self.is_verbose:
+            on_publish_log += f"\n\t[payload] {json.dumps(self.payload)}"
+        print(on_publish_log)
 
     def generate_payload(self):
         payload = {}

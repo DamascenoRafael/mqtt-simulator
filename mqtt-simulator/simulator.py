@@ -6,7 +6,8 @@ from publisher import Publisher
 
 
 class Simulator:
-    def __init__(self, settings_file: Path):
+    def __init__(self, settings_file: Path, is_verbose: bool):
+        self.is_verbose = is_verbose
         self.publishers = self.load_publishers(settings_file)
 
     def read_client_settings(self, settings_dict: dict, default: ClientSettings) -> ClientSettings:
@@ -40,21 +41,42 @@ class Simulator:
                 # create single topic with format: /{PREFIX}
                 topic_url = topic["PREFIX"]
                 publishers.append(
-                    Publisher(broker_settings, topic_url, topic_data, topic_payload_root, topic_client_settings)
+                    Publisher(
+                        broker_settings,
+                        topic_url,
+                        topic_data,
+                        topic_payload_root,
+                        topic_client_settings,
+                        self.is_verbose,
+                    )
                 )
             elif topic["TYPE"] == "multiple":
                 # create multiple topics with format: /{PREFIX}/{id}
                 for id in range(topic["RANGE_START"], topic["RANGE_END"] + 1):
                     topic_url = topic["PREFIX"] + "/" + str(id)
                     publishers.append(
-                        Publisher(broker_settings, topic_url, topic_data, topic_payload_root, topic_client_settings)
+                        Publisher(
+                            broker_settings,
+                            topic_url,
+                            topic_data,
+                            topic_payload_root,
+                            topic_client_settings,
+                            self.is_verbose,
+                        )
                     )
             elif topic["TYPE"] == "list":
                 # create multiple topics with format: /{PREFIX}/{item}
                 for item in topic["LIST"]:
                     topic_url = topic["PREFIX"] + "/" + str(item)
                     publishers.append(
-                        Publisher(broker_settings, topic_url, topic_data, topic_payload_root, topic_client_settings)
+                        Publisher(
+                            broker_settings,
+                            topic_url,
+                            topic_data,
+                            topic_payload_root,
+                            topic_client_settings,
+                            self.is_verbose,
+                        )
                     )
         return publishers
 
