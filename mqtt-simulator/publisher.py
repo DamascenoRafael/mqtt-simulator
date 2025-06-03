@@ -1,12 +1,14 @@
-import time
-import ssl
 import json
+import ssl
 import threading
+import time
+
 import paho.mqtt.client as mqtt
 from data_classes import BrokerSettings, ClientSettings
-from topic_data import TopicDataNumber, TopicDataBool, TopicDataRawValue, TopicDataMathExpression
+from topic_data import TopicDataBool, TopicDataMathExpression, TopicDataNumber, TopicDataRawValue
 
-class Topic(threading.Thread):
+
+class Publisher(threading.Thread):
     def __init__(
         self,
         broker_settings: BrokerSettings,
