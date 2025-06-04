@@ -21,27 +21,24 @@ class Publisher(threading.Thread):
         threading.Thread.__init__(self)
 
         self.broker_settings = broker_settings
-
         self.topic_url = topic_url
         self.topic_data = topic_data
         self.topic_payload_root = topic_payload_root
-
         self.client_settings = client_settings
         self.is_verbose = is_verbose
 
         self.loop = False
-        self.client = None
         self.payload = None
+        self.client = self.create_client()
 
-    def connect(self):
-        self.loop = True
+    def create_client(self) -> mqtt.Client:
         clean_session = None if self.broker_settings.protocol == mqtt.MQTTv5 else self.client_settings.clean
-        self.client = mqtt.Client(
+        client = mqtt.Client(
             callback_api_version=mqtt.CallbackAPIVersion.VERSION2,
             protocol=self.broker_settings.protocol,
             clean_session=clean_session,
         )
-        self.client.on_publish = self.on_publish
+        client.on_publish = self.on_publish
         if self.broker_settings.is_tls_enabled:
             self.client.tls_set(
                 ca_certs=self.broker_settings.tls_ca_path,
@@ -51,6 +48,10 @@ class Publisher(threading.Thread):
                 tls_version=ssl.PROTOCOL_TLSv1_2,
                 ciphers=None,
             )
+        return client
+
+    def connect(self):
+        self.loop = True
         self.client.connect(self.broker_settings.url, self.broker_settings.port)
         self.client.loop_start()
 
