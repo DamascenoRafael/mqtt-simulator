@@ -2,6 +2,7 @@ import json
 import ssl
 import threading
 import time
+from typing import Any
 
 import paho.mqtt.client as mqtt
 from data_classes import BrokerSettings, ClientSettings
@@ -14,7 +15,7 @@ class Publisher(threading.Thread):
         broker_settings: BrokerSettings,
         topic_url: str,
         topic_data: list[TopicData],
-        topic_payload_root: object,
+        topic_payload_root: dict[str, Any],
         client_settings: ClientSettings,
         is_verbose: bool,
     ):
@@ -28,7 +29,7 @@ class Publisher(threading.Thread):
         self.is_verbose = is_verbose
 
         self.loop = False
-        self.payload = None
+        self.payload: dict[str, Any] | None = None
         self.client = self.create_client()
 
     def create_client(self) -> mqtt.Client:
@@ -78,8 +79,8 @@ class Publisher(threading.Thread):
             on_publish_log += f"\n\t[payload] {json.dumps(self.payload)}"
         print(on_publish_log)
 
-    def generate_payload(self):
-        payload = {}
+    def generate_payload(self) -> dict[str, Any] | None:
+        payload: dict[str, Any] = {}
         payload.update(self.topic_payload_root)
         has_data_active = False
         for data in self.topic_data:
@@ -88,5 +89,5 @@ class Publisher(threading.Thread):
                 payload[data.name] = data.generate_value()
         if not has_data_active:
             self.stop()
-            return
+            return None
         return payload
