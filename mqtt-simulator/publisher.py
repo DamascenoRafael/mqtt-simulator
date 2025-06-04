@@ -87,6 +87,6 @@ class Publisher(threading.Thread):
                 has_data_active = True
                 payload[data.name] = data.generate_value()
         if not has_data_active:
-            self.disconnect()
+            self.stop()
             return
         return payload
