@@ -1,28 +1,43 @@
 import math
 import random
-from .topic_data import TopicData
 
-class TopicDataMathExpression(TopicData):
-    def __init__(self, data):
-        super().__init__(data)
-        self.expression_evaluator = None
+from pydantic import Field, PrivateAttr
+
+from .data_settings import DataSettings
+
+
+class DataSettingsMathExpression(DataSettings):
+    math_expression: str = Field(alias="MATH_EXPRESSION")
+    interval_start: int | float = Field(alias="INTERVAL_START")
+    interval_end: int | float = Field(alias="INTERVAL_END")
+    min_delta: int | float = Field(alias="MIN_DELTA")
+    max_delta: int | float = Field(alias="MAX_DELTA")
+
+    _expression_evaluator: "ExpressionEvaluator" = PrivateAttr()
 
     def generate_initial_value(self):
-        self.expression_evaluator = ExpressionEvaluator(
-            self.data["MATH_EXPRESSION"],
-            self.data["INTERVAL_START"],
-            self.data["INTERVAL_END"],
-            self.data["MIN_DELTA"],
-            self.data["MAX_DELTA"],
+        self._expression_evaluator = ExpressionEvaluator(
+            self.math_expression,
+            self.interval_start,
+            self.interval_end,
+            self.min_delta,
+            self.max_delta,
         )
-        return self.expression_evaluator.get_current_expression_value()
+        return self._expression_evaluator.get_current_expression_value()
 
     def generate_next_value(self):
-        return self.expression_evaluator.get_next_expression_value()
+        return self._expression_evaluator.get_next_expression_value()
 
 
 class ExpressionEvaluator:
-    def __init__(self, math_expression, interval_start, interval_end, min_delta, max_delta):
+    def __init__(
+        self,
+        math_expression: str,
+        interval_start: int | float,
+        interval_end: int | float,
+        min_delta: int | float,
+        max_delta: int | float,
+    ):
         self._math_expression = self.generate_compiled_expression(math_expression)
         self._interval_start = interval_start
         self._interval_end = interval_end
@@ -30,10 +45,10 @@ class ExpressionEvaluator:
         self._max_delta = max_delta
         self._x = interval_start
 
-    def get_current_expression_value(self):
+    def get_current_expression_value(self) -> int | float:
         return self._math_expression(self._x)
 
-    def get_next_expression_value(self):
+    def get_next_expression_value(self) -> int | float:
         if self._x > self._interval_end:
             self._x = self._interval_start
             return self.get_current_expression_value()
@@ -41,7 +56,7 @@ class ExpressionEvaluator:
         self._x += step
         return self.get_current_expression_value()
 
-    def generate_compiled_expression(self, expression):
+    def generate_compiled_expression(self, expression: str):
         lambda_expression = "lambda x: " + expression
         code = compile(lambda_expression, "<string>", "eval")
         ALLOWED_FUNCTIONS = {
