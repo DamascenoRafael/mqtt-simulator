@@ -1,5 +1,6 @@
 import argparse
 from pathlib import Path
+
 from simulator import Simulator
 from utils.read_publishers import read_publishers
 
