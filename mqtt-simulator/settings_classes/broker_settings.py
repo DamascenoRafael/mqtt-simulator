@@ -23,4 +23,4 @@ class BrokerSettings(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def validate_topics(cls, data: Any) -> Any:
-        return validate_list_field(field_name="TOPICS", data=data, allow_empty=False)
+        return validate_list_field(caller="BrokerSettings", field_name="TOPICS", data=data, allow_empty=False)

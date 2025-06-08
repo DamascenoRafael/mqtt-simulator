@@ -16,7 +16,7 @@ class TopicSettings(ABC, BaseModel):
     @model_validator(mode="before")
     @classmethod
     def validate_data(cls, data: Any) -> Any:
-        return validate_list_field(field_name="DATA", data=data, allow_empty=False)
+        return validate_list_field(caller="TopicSettings", field_name="DATA", data=data, allow_empty=False)
 
 
 class TopicSingleSettings(TopicSettings):
