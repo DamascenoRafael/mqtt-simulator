@@ -7,7 +7,7 @@ from .data_settings import DataSettings
 
 class DataSettingsRawValue(DataSettings):
     restart_on_end: bool = Field(alias="RESTART_ON_END", default=False)
-    values: list[Any] = Field(alias="VALUES")
+    values: list[Any] = Field(alias="VALUES", min_length=1)
     value_default: dict[str, Any] | None = Field(alias="VALUE_DEFAULT", default=None)
     index_start: int = Field(alias="INDEX_START", default=0)
     index_end: int = Field(alias="INDEX_END", default_factory=lambda dict: len(dict.get("values", [])) - 1)
