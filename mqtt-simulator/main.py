@@ -1,7 +1,12 @@
 import argparse
+import sys
+from json import JSONDecodeError
 from pathlib import Path
 
+from pydantic import ValidationError as PydanticValidationError
 from simulator import Simulator
+from utils.exceptions.simulator_validation_error import SimulatorValidationError
+from utils.print_validation_error import print_validation_error
 from utils.read_publishers import read_publishers
 
 
@@ -38,6 +43,11 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-publishers = read_publishers(args.settings_file, args.is_verbose)
+try:
+    publishers = read_publishers(args.settings_file, args.is_verbose)
+except (JSONDecodeError, PydanticValidationError, SimulatorValidationError) as e:
+    print_validation_error(e)
+    sys.exit(1)
+
 simulator = Simulator(publishers)
 simulator.run()
