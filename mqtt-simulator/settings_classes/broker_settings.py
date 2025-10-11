@@ -13,12 +13,18 @@ class BrokerSettings(BaseModel):
     tls_cert_path: str | None = Field(alias="TLS_CERT_PATH", default=None)
     tls_key_path: str | None = Field(alias="TLS_KEY_PATH", default=None)
 
+    auth_username: str | None = Field(alias="AUTH_USERNAME", default=None)
+    auth_password: str | None = Field(alias="AUTH_PASSWORD", default=None)
+
     def is_tls_enabled(self) -> bool:
         return (
             self.tls_ca_path is not None or
             self.tls_cert_path is not None or
             self.tls_key_path is not None
         )
+
+    def is_auth_enabled(self) -> bool:
+        return self.auth_username is not None or self.auth_password is not None
 
     @model_validator(mode="before")
     @classmethod

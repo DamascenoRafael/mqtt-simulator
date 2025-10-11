@@ -40,13 +40,18 @@ class Publisher(threading.Thread):
         )
         client.on_publish = self.on_publish
         if self.broker_settings.is_tls_enabled():
-            self.client.tls_set(
+            client.tls_set(
                 ca_certs=self.broker_settings.tls_ca_path,
                 certfile=self.broker_settings.tls_cert_path,
                 keyfile=self.broker_settings.tls_key_path,
                 cert_reqs=ssl.CERT_REQUIRED,
                 tls_version=ssl.PROTOCOL_TLSv1_2,
                 ciphers=None,
+            )
+        if self.broker_settings.is_auth_enabled():
+            client.username_pw_set(
+                username=self.broker_settings.auth_username,
+                password=self.broker_settings.auth_password,
             )
         return client
 

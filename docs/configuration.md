@@ -31,6 +31,8 @@ The **Broker settings** section is located at the root level of the JSON configu
 | `TLS_CA_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `ca_certs` param. String path to the Certificate Authority certificate file |
 | `TLS_CERT_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `certfile` param. String path to the PEM encoded client certificate file |
 | `TLS_KEY_PATH` | string | None | Sets the [paho.mqtt.client.tls_set] `keyfile` param. String path to the PEM encoded client private keys file |
+| `AUTH_USERNAME` | string | None | Sets the [paho.mqtt.client.username_pw_set] `username` param. Username to authenticate with |
+| `AUTH_PASSWORD` | string | None | Sets the [paho.mqtt.client.username_pw_set] `password` param. Password to authenticate with |
 | `CLEAN_SESSION` | bool | True | Sets the [paho.mqtt.client] `clean_session` param. Boolean that determines the client type. This property is ignored if `PROTOCOL_VERSION` is `5`. |
 | `RETAIN` | bool | False | Sets the [paho.mqtt.client.publish] `retain` param. If set to true, the message will be set as the “last known good”/retained message for the topic |
 | `QOS` | number | 2 | Sets the [paho.mqtt.client.publish] `qos` param. Quality of service level to use |
@@ -40,6 +42,7 @@ The **Broker settings** section is located at the root level of the JSON configu
 [paho.mqtt.client]:https://eclipse.dev/paho/files/paho.mqtt.python/html/client.html#paho.mqtt.client.Client
 [paho.mqtt.client.publish]:https://eclipse.dev/paho/files/paho.mqtt.python/html/client.html#paho.mqtt.client.Client.publish
 [paho.mqtt.client.tls_set]:https://eclipse.dev/paho/files/paho.mqtt.python/html/client.html#paho.mqtt.client.Client.tls_set
+[paho.mqtt.client.username_pw_set]:https://eclipse.dev/paho/files/paho.mqtt.python/html/client.html#paho.mqtt.client.Client.username_pw_set
 
 ## Topics settings
 
