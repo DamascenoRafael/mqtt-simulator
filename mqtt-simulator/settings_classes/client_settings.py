@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pydantic import BaseModel, Field
 
 
@@ -7,7 +9,7 @@ class ClientSettings(BaseModel):
     qos: int | None = Field(alias="QOS", default=None)
     time_interval: int | None = Field(alias="TIME_INTERVAL", default=None)
 
-    def resolve_with_default(self, default: "ClientSettings") -> "ClientSettings":
+    def resolve_with_default(self, default: ClientSettings) -> ClientSettings:
         def resolve[T](value: T, default_value: T) -> T:
             return value if value is not None else default_value
 
