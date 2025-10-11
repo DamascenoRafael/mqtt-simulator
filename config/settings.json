@@ -1,5 +1,5 @@
 {
-    "BROKER_URL": "mqtt.eclipseprojects.io",
+    "BROKER_URL": "broker.hivemq.com",
     "BROKER_PORT": 1883,
     "TOPICS": [
         {
