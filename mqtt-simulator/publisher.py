@@ -55,18 +55,18 @@ class Publisher(threading.Thread):
             )
         return client
 
-    def connect(self):
+    def run(self):
         self.loop = True
         self.client.connect(self.broker_settings.url, self.broker_settings.port)
         self.client.loop_start()
+        self.start_publish_loop()
 
     def stop(self):
         self.loop = False
         self.client.loop_stop()
         self.client.disconnect()
 
-    def run(self):
-        self.connect()
+    def start_publish_loop(self):
         while self.loop:
             self.payload = self.generate_payload()
             self.client.publish(
@@ -76,12 +76,6 @@ class Publisher(threading.Thread):
                 retain=self.client_settings.retain,
             )
             time.sleep(self.client_settings.time_interval)
-
-    def on_publish(self, client, userdata, mid, reason_code, properties):
-        on_publish_log = f"[{time.strftime('%H:%M:%S')}] Data published on: {self.topic_url}"
-        if self.is_verbose:
-            on_publish_log += f"\n\t[payload] {json.dumps(self.payload)}"
-        print(on_publish_log)
 
     def generate_payload(self) -> dict[str, Any] | None:
         payload: dict[str, Any] = {}
@@ -95,3 +89,9 @@ class Publisher(threading.Thread):
             self.stop()
             return None
         return payload
+
+    def on_publish(self, client, userdata, mid, reason_code, properties):
+        on_publish_log = f"[{time.strftime('%H:%M:%S')}] Data published on: {self.topic_url}"
+        if self.is_verbose:
+            on_publish_log += f"\n\t[payload] {json.dumps(self.payload)}"
+        print(on_publish_log)
