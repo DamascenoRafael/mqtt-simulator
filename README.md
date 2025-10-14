@@ -72,11 +72,11 @@ See the [configuration documentation](./docs/configuration.md) for detailed usag
 
 You can also check a full settings file example at: [settings.json](../config/settings.json).
 
-Below is a minimal configuration file that connects to the `mqtt.eclipseprojects.io` broker and publishes data to the `/place/roof` and `/place/basement` topics. The simulator generates `temperature` variations based on the provided parameters:
+Below is a minimal configuration file that connects to the `broker.hivemq.com` broker and publishes data to the `/place/roof` and `/place/basement` topics. The simulator generates `temperature` variations based on the provided parameters:
 
 ```json
 {
-  "BROKER_URL": "mqtt.eclipseprojects.io",
+  "BROKER_URL": "broker.hivemq.com",
   "TOPICS": [
     {
       "TYPE": "list",

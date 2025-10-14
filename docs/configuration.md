@@ -15,7 +15,7 @@ The **Broker settings** section is located at the root level of the JSON configu
 
 ```json
 {
-    "BROKER_URL": "mqtt.eclipse.org",
+    "BROKER_URL": "broker.hivemq.com",
     "BROKER_PORT": 1883,
     "TOPICS": [
         ...
