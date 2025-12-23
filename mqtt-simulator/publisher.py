@@ -5,6 +5,7 @@ import time
 from typing import Any
 
 import paho.mqtt.client as mqtt
+from paho.mqtt.enums import CallbackAPIVersion, MQTTProtocolVersion
 from settings_classes import BrokerSettings, ClientSettings, DataSettings
 
 
@@ -34,8 +35,8 @@ class Publisher(threading.Thread):
     def create_client(self) -> mqtt.Client:
         clean_session = None if self.broker_settings.protocol == mqtt.MQTTv5 else self.client_settings.clean_session
         client = mqtt.Client(
-            callback_api_version=mqtt.CallbackAPIVersion.VERSION2,
-            protocol=self.broker_settings.protocol,
+            callback_api_version=CallbackAPIVersion.VERSION2,
+            protocol=MQTTProtocolVersion(self.broker_settings.protocol),
             clean_session=clean_session,
         )
         client.on_publish = self.on_publish
